@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI ຜູ້ຊ່ວຍຄິດໄລ່</title>
+    <style>
+        body {
+            font-family: 'Phetsarath OT', Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            height: 90vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background: #0084ff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .user-message {
+            background: #0084ff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .ai-message {
+            background: #e4e6eb;
+            color: #050505;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            background: #fff;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+        .chat-input-area button {
+            background: #0084ff;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            margin-left: 8px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">🤖 AI ຜູ້ຊ່ວຍຄິດໄລ່</div>
+    <div id="chatMessages" class="chat-messages">
+        <div class="message ai-message">ສະບາຍດີ! ຂ້ອຍແມ່ນ AI ຜູ້ຊ່ວຍ. ສາມາດທັກທາຍ ຫຼື ພິມເລກໃຫ້ຂ້ອຍບວກ ລົບ ຄູນ ຫານ ໄດ້ເດີ (ຕົວຢ່າງ: 5 + 5)</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="ພິມข้อຄວາມ ຫຼື ປະໂຫຍກເລກ..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">ສົ່ງ</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        const inputField = document.getElementById('userInput');
+        const text = inputField.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user-message');
+        inputField.value = '';
+
+        setTimeout(() => {
+            const aiResponse = generateAIResponse(text);
+            appendMessage(aiResponse, 'ai-message');
+        }, 500);
+    }
+
+    function appendMessage(text, className) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${className}`;
+        messageDiv.innerText = text;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function generateAIResponse(input) {
+        // ລະບົບກວດຈັບເລກ ບວກ ລົບ ຄູນ ຫານ ຢ່າງງ່າຍ
+        // ຮອງຮັບຮູບແບບເຊັ່ນ: 5+5, 10 - 2, 4 * 3, 20 / 4
+        const mathRegex = /^[\d\.\s]+[\+\-\*\/][\d\.\s]+$/;
+        
+        if (mathRegex.test(input)) {
+            try {
+                // ໃຊ້ eval ຢ່າງປອດໄພສຳລັບການຄິດໄລ່ເລກພື້ນຖານ
+                let result = eval(input);
+                return `ຄຳຕອບຂອງ'' ${input} ແມ່ນ: ${result}`;
+            } catch (e) {
+                return "ຂໍອະໄພ, ຂ້ອຍຄຳໄລ່ເລກກຸ່ມນີ້ບໍ່ໄດ້.";
+            }
+        }
+
+        // ຕອບກັບທຳມະດາ
+        const lowerInput = input.toLowerCase();
+        if (lowerInput.includes('ສະບາຍດີ') || lowerInput.includes('hello')) {
+            return "ສະບາຍດີ! ມື້ນີ້ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍ ຫຼື ຄິດໄລ່ເລກໃຫ້ບໍ?";
+        } else if (lowerInput.includes('ຊື່ຫຍັງ') || lowerInput.includes('ເຈົ້າແມ່ນໃຜ')) {
+            return "ຂ້ອຍແມ່ນ AI ຜູ້ຊ່ວຍແຈ່ວໆ ທີ່ສ້າງຂຶ້ນມາເພື່ອຊ່ວຍສົນທະນາ ແລະ ຄິດໄລ່ເລກ!";
+        } else {
+            return `ເຈົ້າພິມວ່າ: "${input}" — ຖ້າຢາກໃຫ້ຄິດໄລ່ເລກ, ລອງພິມແບບ 10 * 5 ເບິ່ງເດີ!`;
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>
