@@ -1606,6 +1606,18 @@ img,svg,video,canvas,iframe{max-width:100%}
 #xhead #btnReg{padding:6px clamp(8px,2.4vw,14px);font-size:clamp(11px,3.3vw,13px);white-space:nowrap}
 }
 @media(max-width:339px){#xhead .xwm{display:none!important}}
+/* ຈໍແຄບ (ໂທລະສັບນ້ອຍ): ຍໍ້ໄອຄອນ + ເພີ່ມຄວາມກວ້າງເນື້ອຫາ */
+@media(max-width:400px){
+#xhead .xrow{padding-left:6px;padding-right:6px;gap:2px}
+#xhead .xic{padding:5px 4px!important;font-size:17px!important}
+#xhead .xlogo svg{width:24px!important}
+#xhead .xwm{font-size:19px!important}
+#xhead #btnAuth{font-size:11px!important;padding:5px 2px!important}
+#xhead #btnAuth::before{font-size:16px!important;margin-right:4px!important}
+#xhead #btnReg{font-size:11px!important;padding:5px 7px!important}
+.xwrap,main.max-w-7xl{padding-left:8px!important;padding-right:8px!important}
+}
+@media(max-width:340px){#xhead .xic{padding:4px 3px!important;font-size:15px!important}}
 @supports(height:100dvh){#sheet>div{max-height:90dvh!important}.pk-card{max-height:84dvh}}
 @media(min-width:1536px){.max-w-7xl{max-width:1560px!important}}
 </style>
@@ -2292,7 +2304,7 @@ function authSheet(mode='login'){
   const su = mode === 'signup';
   openSheet(su ? 'ສະໝັກສະມາຊິກ' : 'ເຂົ້າສູ່ລະບົບ', `
     ${su ? '' : authQuick()}
-    ${su ? '<input id="aName" class="inp" placeholder="ຊື່" autocomplete="name">' : ''}
+    ${su ? '<input id="aName" class="inp" placeholder="ຊື່ (ບໍ່ໃສ່ກໍໄດ້)" autocomplete="name">' : ''}
     <input id="aEmail" type="email" class="inp" placeholder="ອີເມວ" autocomplete="email">
     <input id="aPass" type="password" class="inp" placeholder="ລະຫັດຜ່ານ (ຢ່າງໜ້ອຍ 6 ຕົວ)" autocomplete="${su?'new-password':'current-password'}">
     <button data-act="${su?'doSignup':'doLogin'}" class="btn mt-4 w-full py-3">${su?'ສະໝັກ':'ເຂົ້າສູ່ລະບົບ'}</button>
@@ -2382,15 +2394,39 @@ async function doLogin(){
   if (error) return toast(/confirm/i.test(error.message) ? 'ຍັງບໍ່ໄດ້ຢືນຢັນອີເມວ' : 'ອີເມວ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກ');
   closeSheet(); toast('ເຂົ້າສູ່ລະບົບສຳເລັດ', true);
 }
+function signupErr(m){
+  m = m || '';
+  if (/rate limit|too many|over_email|security purposes/i.test(m)) return 'ມີການສະໝັກຫຼາຍເກີນໄປ ກະລຸນາລໍຖ້າສັກຄູ່ ແລ້ວລອງໃໝ່';
+  if (/already|registered|exists/i.test(m)) return 'ອີເມວນີ້ສະໝັກແລ້ວ ກະລຸນາກົດ ເຂົ້າສູ່ລະບົບ';
+  if (/password/i.test(m)) return 'ລະຫັດຜ່ານບໍ່ຜ່ານ ກະລຸນາໃຊ້ຢ່າງໜ້ອຍ 6 ຕົວ';
+  if (/invalid.*email|email.*invalid|valid email/i.test(m)) return 'ອີເມວບໍ່ຖືກຕ້ອງ';
+  return m || 'ສະໝັກບໍ່ສຳເລັດ ລອງໃໝ່ອີກຄັ້ງ';
+}
+let _suBusy = false;
 async function doSignup(){
-  const name = $('aName').value.trim().replace(/\s+/g, ' ');
-  if (name.length < 2) return toast('ກະລຸນາໃສ່ຊື່ (ຢ່າງໜ້ອຍ 2 ຕົວອັກສອນ)');
-  if (($('aPass').value || '').length < 6) return toast('ລະຫັດຜ່ານຢ່າງໜ້ອຍ 6 ຕົວ');
-  const { data: free, error: ne } = await sb.rpc('name_available', { p_name: name });
-  if (!ne && free === false) return toast('ຊື່ນີ້ມີຄົນໃຊ້ແລ້ວ ກະລຸນາຕັ້ງຊື່ອື່ນ');
-  const { data, error } = await sb.auth.signUp({ email: $('aEmail').value.trim(), password: $('aPass').value, options:{ data:{ full_name: name } } });
-  if (error) return toast(/database error|duplicate|unique|full_name/i.test(error.message) ? 'ຊື່ນີ້ມີຄົນໃຊ້ແລ້ວ ຫຼື ສະໝັກບໍ່ສຳເລັດ ກະລຸນາຕັ້ງຊື່ອື່ນ' : error.message);
-  closeSheet(); toast(data.session ? 'ສະໝັກສຳເລັດ' : 'ສະໝັກແລ້ວ! ກວດອີເມວເພື່ອຢືນຢັນ', true);
+  if (_suBusy) return;
+  const email = $('aEmail').value.trim(), pass = $('aPass').value || '';
+  let name = $('aName').value.trim().replace(/\s+/g, ' ');
+  if (!/^\S+@\S+\.\S+$/.test(email)) return toast('ກະລຸນາໃສ່ອີເມວໃຫ້ຖືກ');
+  if (pass.length < 6) return toast('ລະຫັດຜ່ານຢ່າງໜ້ອຍ 6 ຕົວ');
+  if (!name) name = email.split('@')[0];          // ບໍ່ໃສ່ຊື່ກໍໄດ້ — ໃຊ້ໜ້າ @ ແທນ
+  _suBusy = true;
+  const btn = document.querySelector('#sheet [data-act="doSignup"]'); if (btn) btn.disabled = true;
+  try {
+    // ຊື່ຊ້ຳກັນໄດ້ — ບໍ່ກວດຊື່ແລ້ວ
+    const go = n => sb.auth.signUp({ email, password: pass, options: { data: { full_name: n } } });
+    let r = await go(name);
+    // ຖ້າຖານຂໍ້ມູນຍັງມີ unique ຂອງຊື່ຄ້າງ → ລອງໃໝ່ອັດຕະໂນມັດດ້ວຍເລກທ້າຍ ບໍ່ໃຫ້ລູກຄ້າຕິດ
+    if (r.error && /database error|duplicate|unique|full_name/i.test(r.error.message)) r = await go(name + ' ' + (1000 + Math.floor(Math.random() * 9000)));
+    const { data, error } = r;
+    if (error) return toast(signupErr(error.message));
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) return toast('ອີເມວນີ້ສະໝັກແລ້ວ ກະລຸນາກົດ ເຂົ້າສູ່ລະບົບ');
+    if (!data.session) {
+      const l = await sb.auth.signInWithPassword({ email, password: pass });
+      if (l.error) { closeSheet(); return toast('ສະໝັກແລ້ວ! ກວດອີເມວເພື່ອຢືນຢັນ (ລວມ Spam)', true); }
+    }
+    closeSheet(); toast('ສະໝັກສຳເລັດ', true);
+  } finally { _suBusy = false; if (btn) btn.disabled = false; }
 }
 async function forgotPass(){
   const email = ($('aEmail')?.value || '').trim();
@@ -3748,13 +3784,18 @@ function nfBadge(){
   const n = nfGet('list', []).filter(x => !x.r).length, b = $('notifBadge'); if (!b) return;
   b.textContent = n > 9 ? '9+' : n; b.classList.toggle('hidden', !n);
 }
+function nfAddQuiet(items){
+  const list = nfGet('list', []); items.forEach(x => list.unshift({ ...x, r: 0 })); nfSet('list', list.slice(0, 30)); nfBadge();
+}
 function nfAdd(items){
   const list = nfGet('list', []); items.forEach(x => list.unshift({ ...x, r: 0 })); nfSet('list', list.slice(0, 30)); nfBadge();
   toast('🔔 ' + items[0].msg + (items.length > 1 ? ' (+' + (items.length - 1) + ')' : ''), true);
   playChime(); nfShow('XEVION · ອັບເດດອໍເດີ', items.map(x => x.msg).join('\n'));
 }
 async function nfPoll(){
-  if (!S.user || NF.busy) return; NF.busy = true;
+  if (!S.user) return;
+  if (NF.busy) { NF.again = true; return; }
+  NF.busy = true;
   try {
     const { data, error } = await sb.from('shop_orders').select('*').eq('user_id', S.user.id).order('created_at', { ascending: false }).limit(30);
     if (error || !data) return;
@@ -3767,21 +3808,22 @@ async function nfPoll(){
       if (o.tracking_no && p.t !== o.tracking_no) add.push({ id: o.id, ts: Date.now(), st: 'shipped', msg: 'ອໍເດີ #' + o.id + ' ມີເລກພັດສະດຸ ' + o.tracking_no });
     });
     nfSet('ords', cur); if (add.length) nfAdd(add);
-  } catch {} finally { NF.busy = false; }
+  } catch {} finally { NF.busy = false; if (NF.again) { NF.again = false; setTimeout(nfPoll, 0); } }
 }
 function nfInit(){
   const on = !!S.user, b = $('btnNotif'); if (b) b.classList.toggle('hidden', !on);
-  if (!on) { if (NF.timer) { clearInterval(NF.timer); NF.timer = null; } NF.uid = null; return; }
+  if (!on) { if (NF.timer) { clearInterval(NF.timer); NF.timer = null; } if (NF.ch) { try { sb.removeChannel(NF.ch); } catch {} NF.ch = null; } NF.uid = null; return; }
   nfBadge();
-  if (NF.uid !== S.user.id) { NF.uid = S.user.id; if (NF.timer) clearInterval(NF.timer); NF.timer = setInterval(nfPoll, 30000); nfPoll(); }
+  if (NF.uid !== S.user.id) { NF.uid = S.user.id; if (NF.timer) clearInterval(NF.timer); NF.timer = setInterval(nfPoll, 12000); nfPoll();
+    try { if (NF.ch) sb.removeChannel(NF.ch); NF.ch = sb.channel('nf-ord-' + S.user.id).on('postgres_changes', { event: '*', schema: 'public', table: 'shop_orders', filter: 'user_id=eq.' + S.user.id }, () => nfPoll()).subscribe(); } catch {} }
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { nfPoll(); try { tpBar(); } catch {} } });
 function nfSheet(){
   if (!S.user) return authSheet();
-  const list = nfGet('list', []), ic = { paid: 'fa-circle-check', shipped: 'fa-truck-fast', done: 'fa-box-open', cancelled: 'fa-circle-xmark', pending: 'fa-hourglass-half' };
+  const list = nfGet('list', []), ic = { topup: 'fa-wallet', paid: 'fa-circle-check', shipped: 'fa-truck-fast', done: 'fa-box-open', cancelled: 'fa-circle-xmark', pending: 'fa-hourglass-half' };
   const perm = ('Notification' in window) ? Notification.permission : 'unsupported';
   const nfTop = `<div class="nf-set"><button type="button" data-act="nfTest" class="btn-o py-2 text-xs font-bold"><i class="fa-solid fa-volume-high"></i> ທົດລອງສຽງ</button>${perm === 'granted' ? '<span class="nf-ok"><i class="fa-solid fa-circle-check"></i> ແຈ້ງເຕືອນນອກເວັບ: ເປີດແລ້ວ</span>' : perm === 'unsupported' ? '' : '<button type="button" data-act="nfEnable" class="btn py-2 text-xs font-bold"><i class="fa-solid fa-bell"></i> ເປີດແຈ້ງເຕືອນນອກເວັບ</button>'}</div>`;
-  openSheet('ການແຈ້ງເຕືອນ', nfTop + (list.length ? list.map(x => `<button type="button" data-act="orders" class="nf ${x.r ? '' : 'new'}"><span class="nf-i"><i class="fa-solid ${ic[x.st] || 'fa-bell'}"></i></span><span class="nf-t"><b>${esc(x.msg)}</b><small>${dt(x.ts)}</small></span></button>`).join('') + '<button type="button" data-act="nfClear" class="w-full text-sm text-red-500 py-3 mt-1">ລ້າງການແຈ້ງເຕືອນ</button>'
+  openSheet('ການແຈ້ງເຕືອນ', nfTop + (list.length ? list.map(x => `<button type="button" data-act="${x.st === 'topup' ? 'tx' : 'orders'}" class="nf ${x.r ? '' : 'new'}"><span class="nf-i"><i class="fa-solid ${ic[x.st] || 'fa-bell'}"></i></span><span class="nf-t"><b>${esc(x.msg)}</b><small>${dt(x.ts)}</small></span></button>`).join('') + '<button type="button" data-act="nfClear" class="w-full text-sm text-red-500 py-3 mt-1">ລ້າງການແຈ້ງເຕືອນ</button>'
     : '<p class="text-sm text-slate-400 text-center py-8"><i class="fa-regular fa-bell text-3xl block mb-2"></i>ຍັງບໍ່ມີການແຈ້ງເຕືອນ<br>ເມື່ອຮ້ານປ່ຽນສະຖານະອໍເດີ ຫຼືໃສ່ເລກພັດສະດຸ ຈະຂຶ້ນບ່ອນນີ້</p>'));
   nfSet('list', list.map(x => ({ ...x, r: 1 }))); nfBadge();
 }
@@ -4093,6 +4135,7 @@ async function twSync(){
       updateHeader();
       if (okRows.length) { const w = $('navWallet'); w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash'); }
     }
+    if (fresh.length) { try { nfAddQuiet(fresh.map(r => ({ id: 't' + r.id, ts: Date.now(), st: 'topup', msg: r.status === 'approved' ? 'ເຕີມເງິນ +' + fmt(r.amount) + ' LAK ສຳເລັດ' : 'ສະລິບເຕີມເງິນ ' + fmt(r.amount) + ' K ຖືກປະຕິເສດ' + (r.note ? ' · ' + r.note : '') }))); playChime(); } catch {} }
     if (okRows.length) showTopupOk(okRows.reduce((a, r) => a + Number(r.amount || 0), 0), bal ?? Number(S.profile?.balance || 0));
     noRows.forEach(r => toast(`ສະລິບເຕີມເງິນ ${fmt(r.amount)} K ຖືກປະຕິເສດ${r.note ? ' · ' + r.note : ''}`));
     if (fresh.length || $('tHist')) { if ($('tHist')) loadMyTopups(); }
