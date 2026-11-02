@@ -1590,17 +1590,20 @@ img,svg,video,canvas,iframe{max-width:100%}
 #xhead .xtop>div{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
 .xtl{min-width:0;flex:1 1 auto;white-space:nowrap;overflow:hidden}.xtl span{overflow:hidden;text-overflow:ellipsis}.xsoct{flex:none}
 .xbnav{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important}
+/* fix: .xic display overrode .hidden, so admin/bell buttons showed for everyone */
+[hidden],.xic.hidden:not([data-act=cart]){display:none!important}
 @media(max-width:767px){
 #xhead .xrow{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right));gap:4px}
-#xhead .xlogo{flex:0 1 auto;min-width:0;gap:6px}
-#xhead .xlogo svg{width:clamp(28px,8.5vw,44px);height:auto;margin-right:-4px;flex:none}
-#xhead .xwm{display:flex!important;font-size:clamp(20px,7vw,32px);min-width:0}
-#xhead .xwm small{font-size:clamp(6px,2vw,9px);letter-spacing:.2em;white-space:nowrap}
-#xhead .xact{flex:0 0 auto;gap:0;margin-left:auto}
+#xhead .xlogo{flex:0 0 auto;gap:6px}
+#xhead .xlogo svg{width:clamp(26px,7.5vw,44px);height:auto;margin-right:-4px;flex:none}
+#xhead .xwm{display:flex!important;font-size:clamp(18px,6.2vw,32px)}
+#xhead .xwm small{font-size:clamp(6px,1.9vw,9px);letter-spacing:.16em;white-space:nowrap}
+#xhead .xact{flex:0 1 auto;min-width:0;overflow:hidden;gap:0;margin-left:auto}
 #xhead .xic{padding:6px clamp(5px,1.8vw,10px);font-size:clamp(18px,5.4vw,22px)}
 #xhead [data-act=cart]{display:none!important}
-#xhead #btnAuth{padding:6px 4px;font-size:clamp(11px,3.3vw,13px)}
+#xhead #btnAuth{padding:6px 4px;font-size:clamp(11px,3.3vw,13px);white-space:nowrap}
 #xhead #btnAuth::before{font-size:clamp(18px,5.4vw,22px);margin-right:6px}
+#xhead #btnReg{padding:6px clamp(8px,2.4vw,14px);font-size:clamp(11px,3.3vw,13px);white-space:nowrap}
 }
 @media(max-width:339px){#xhead .xwm{display:none!important}}
 @supports(height:100dvh){#sheet>div{max-height:90dvh!important}.pk-card{max-height:84dvh}}
@@ -2260,7 +2263,7 @@ function updateHeader(){
   $('btnAuth').textContent = S.profile ? fmt(S.profile.balance) + ' K' : 'ເຂົ້າສູ່ລະບົບ';
   $('btnAuth').dataset.act = S.user ? 'profile' : 'auth';
   $('btnReg').classList.toggle('md:block', !S.user); $('btnReg').classList.toggle('hidden', !!S.user);
-  $('btnAdmin').classList.toggle('hidden', !S.profile?.is_admin);
+  $('btnAdmin').classList.toggle('hidden', !S.profile?.is_admin); $('btnAdmin').hidden = !S.profile?.is_admin; $('btnAdmin').disabled = !S.profile?.is_admin;
   $('btnTop').classList.toggle('hidden', !S.user);
   $('btnAuth').classList.toggle('max-md:hidden', !!S.user);
   navWallet(); balWatch(S.profile ? Number(S.profile.balance || 0) : null);
