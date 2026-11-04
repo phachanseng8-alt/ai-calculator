@@ -2,7 +2,7 @@
 <html lang="lo">
 <head>
 <meta charset="UTF-8"><meta name="theme-color" content="#000000">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>XEVION TECH</title>
@@ -278,7 +278,7 @@ body.out .tpcta{display:none}
 <div class="modal" id="modal"><div class="sheet" role="dialog" aria-modal="true">
 <div class="seg"><button id="tl" class="on">ເຂົ້າສູ່ລະບົບ</button><button id="tr">ສະໝັກສະມາຊິກ</button></div>
 <p id="mh"></p>
-<div class="f" id="fm"><input id="un" type="text" inputmode="email" placeholder="ອີເມວ (ຕ້ອງເປັນອີເມວຈິງ)" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false"><input id="nm" placeholder="ຊື່ທີ່ສະແດງ (ບໍ່ບັງຄັບ)" autocomplete="nickname" hidden><input id="pw" type="password" placeholder="ລະຫັດຜ່ານ" autocomplete="current-password"><input id="pw2" type="password" placeholder="ຢືນຢັນລະຫັດຜ່ານ" autocomplete="new-password" hidden>
+<div class="f" id="fm"><input id="un" type="text" inputmode="email" placeholder="ອີເມວ (ຕ້ອງເປັນອີເມວຈິງ)" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false"><input id="sph" type="tel" inputmode="numeric" placeholder="ເບີໂທ WhatsApp (ເຊັ່ນ 20 5555 5555)" autocomplete="tel" maxlength="20" hidden><input id="nm" placeholder="ຊື່ທີ່ສະແດງ (ບໍ່ບັງຄັບ)" autocomplete="nickname" hidden><input id="pw" type="password" placeholder="ລະຫັດຜ່ານ" autocomplete="current-password"><input id="pw2" type="password" placeholder="ຢືນຢັນລະຫັດຜ່ານ" autocomplete="new-password" hidden>
 <div class="err" id="err" role="alert"></div><button class="btn" id="go">ເຂົ້າສູ່ລະບົບ</button><button class="btn ghost" id="x">ປິດ</button></div>
 <div class="f hid" id="vf"><input id="vc" inputmode="numeric" maxlength="10" placeholder="ລະຫັດຢືນຢັນຈາກອີເມວ" autocomplete="one-time-code"><div class="err" id="verr" role="alert"></div><button class="btn" id="vgo">ຢືນຢັນອີເມວ</button><button class="btn ghost" id="vre">ສົ່ງລະຫັດໃໝ່</button><button class="btn ghost" id="vx">ປິດ</button></div></div></div>
 <div class="ov" id="ed"></div>
@@ -1257,7 +1257,7 @@ function inView(p){
  return p.cat==cat&&(q||p.place!="out")}
 function grid(){var L=P.filter(function(p){return inView(p)&&p.name.indexOf(q)>-1});
  if(sort=="lo")L.sort(function(a,b){return eff(a)-eff(b)});if(sort=="hi")L.sort(function(a,b){return eff(b)-eff(a)});
- $("gr").innerHTML=L.length?L.map(function(p){var C=CATS.filter(function(c){return c.id==p.cat})[0]||CATS[0]||{c:"#3b4252,#8a94a3",g:"🏋️"},s=stockOf(p);return '<div class="pc"><div class="art" style="background:linear-gradient(135deg,'+C.c+')">'+(p.img?'<img src="'+esc(p.img)+'" alt="">':C.g)+(S.sold[p.id]?'<span class="sold">ຂາຍແລ້ວ '+S.sold[p.id]+'</span>':'')+(isPromo(p)?'<span class="pbadge">-'+Math.round(100-p.pp*100/p.price)+'%</span>':'')+'</div><div class="pn">'+esc(p.name)+'</div><div class="price">'+fmt(eff(p))+(isPromo(p)?'<span class="old">'+fmt(p.price)+'</span>':'')+'</div><button class="btn" data-b="'+p.id+'"'+(s?'':' disabled')+'>'+(s?'🛒 ໃສ່ກະຕ່າ':'ໝົດສະຕັອກ')+'</button><div class="st"><span class="'+(s?'':'out')+'">'+(s?'ພ້ອມຂາຍ':'ໝົດສະຕັອກ')+'</span><span>'+(p.unl?'ບໍ່ຈຳກັດ':'ເຫຼືອ '+s+' ຊິ້ນ')+'</span></div></div>'}).join(""):(LOADERR?'<div class="empty" style="grid-column:1/-1">ໂຫຼດສິນຄ້າບໍ່ໄດ້<br><small>'+esc(LOADERR)+'</small><br><button class="btn sm" data-x="reload" style="margin-top:10px">🔄 ລອງໃໝ່</button></div>':'<div class="empty" style="grid-column:1/-1">ບໍ່ພົບສິນຄ້າ. ລອງຄຳຄົ້ນຫາອື່ນ.</div>')}
+ $("gr").innerHTML=L.length?L.map(function(p){var C=CATS.filter(function(c){return c.id==p.cat})[0]||CATS[0]||{c:"#3b4252,#8a94a3",g:"🏋️"},s=stockOf(p);return '<div class="pc"><div class="art" style="background:linear-gradient(135deg,'+esc(C.c)+')">'+(p.img?'<img src="'+esc(p.img)+'" alt="">':esc(C.g))+(S.sold[p.id]?'<span class="sold">ຂາຍແລ້ວ '+(Number(S.sold[p.id])||0)+'</span>':'')+(isPromo(p)?'<span class="pbadge">-'+Math.round(100-p.pp*100/p.price)+'%</span>':'')+'</div><div class="pn">'+esc(p.name)+'</div><div class="price">'+fmt(eff(p))+(isPromo(p)?'<span class="old">'+fmt(p.price)+'</span>':'')+'</div><button class="btn" data-b="'+p.id+'"'+(s?'':' disabled')+'>'+(s?'🛒 ໃສ່ກະຕ່າ':'ໝົດສະຕັອກ')+'</button><div class="st"><span class="'+(s?'':'out')+'">'+(s?'ພ້ອມຂາຍ':'ໝົດສະຕັອກ')+'</span><span>'+(p.unl?'ບໍ່ຈຳກັດ':'ເຫຼືອ '+s+' ຊິ້ນ')+'</span></div></div>'}).join(""):(LOADERR?'<div class="empty" style="grid-column:1/-1">ໂຫຼດສິນຄ້າບໍ່ໄດ້<br><small>'+esc(LOADERR)+'</small><br><button class="btn sm" data-x="reload" style="margin-top:10px">🔄 ລອງໃໝ່</button></div>':'<div class="empty" style="grid-column:1/-1">ບໍ່ພົບສິນຄ້າ. ລອງຄຳຄົ້ນຫາອື່ນ.</div>')}
 function openSh(h){$("sb").innerHTML=h+'<button class="btn ghost" data-o="close" style="margin-top:12px">ປິດ</button>';$("sheet").classList.add("on")}
 function closeSh(){$("sheet").classList.remove("on")}
 /* --- ສັ່ງຊື້ (ລູກຄ້າ) --- */
@@ -1273,7 +1273,7 @@ function preHtml(p){
  '<input id="fv" placeholder="ບ້ານ">'+
  '<input id="fa" placeholder="ທີ່ຢູ່ລະອຽດ (ເລກເຮືອນ, ຖະໜົນ, ຈຸດສັງເກດ)">'+
  '<input id="fb" placeholder="ສາຂາ'+esc(CONFIG.carrier)+'ທີ່ຕ້ອງການຮັບ"></div>'+
- '<input id="fm" placeholder="ໝາຍເຫດ (ບໍ່ບັງຄັບ)">'+'<label class="lb" for="fpay">ວິທີຊຳລະ</label><select id="fpay"><option value="wallet">💰 ຈ່າຍດ້ວຍຍອດເງິນ (ຫັກທັນທີ)</option><option value="cod">ເກັບເງິນປາຍທາງ</option></select><div id="fslipw" hidden>'+(CONFIG.qr?'<img src="'+esc(CONFIG.qr)+'" alt="LDB QR" style="width:100%;border-radius:16px;margin-bottom:8px">':'<p>ຍັງບໍ່ໄດ້ຕັ້ງ QR ກະລຸນາຕິດຕໍ່ຮ້ານ</p>')+'<label class="lb" for="fslip">ແນບສະລິບຫຼັງໂອນ</label><input id="fslip" type="file" accept="image/*"></div>'+
+ '<input id="fm" placeholder="ໝາຍເຫດ (ບໍ່ບັງຄັບ)">'+'<label class="lb" for="fpay">ວິທີຊຳລະ</label><select id="fpay"><option value="cod">💵 ເກັບເງິນປາຍທາງ (ບໍ່ຕ້ອງເຕີມເງິນ)</option><option value="wallet">💰 ຈ່າຍດ້ວຍຍອດເງິນ (ຫັກທັນທີ)</option></select><p class="mh" style="margin:6px 0 0">ເກັບເງິນປາຍທາງ: ຮ້ານຈະໂທ/WhatsApp ຢືນຢັນກ່ອນຈັດສົ່ງ ແລ້ວຈ່າຍເງິນຕອນຮັບສິນຄ້າ</p><div id="fslipw" hidden>'+(CONFIG.qr?'<img src="'+esc(CONFIG.qr)+'" alt="LDB QR" style="width:100%;border-radius:16px;margin-bottom:8px">':'<p>ຍັງບໍ່ໄດ້ຕັ້ງ QR ກະລຸນາຕິດຕໍ່ຮ້ານ</p>')+'<label class="lb" for="fslip">ແນບສະລິບຫຼັງໂອນ</label><input id="fslip" type="file" accept="image/*"></div>'+
  '<div class="card" id="fsum" style="margin:0"></div>'+
  '<div class="err" id="ferr" role="alert"></div>'+
  '<button class="btn" data-o="preSend">ຢືນຢັນສັ່ງຊື້</button></div>'}
@@ -1300,12 +1300,12 @@ async function preSend(){var p=curPre(),er=$("ferr"),code="";
  if(!nm)return bad("fn","ກະລຸນາໃສ່ຊື່");
  if(!ph)return bad("fp","ເບີໂທຕ້ອງເປັນ +856 20 xxxx xxxx");
  if(!pv)return bad("fpv","ກະລຸນາເລືອກແຂວງກ່ອນ");if(!dt)return bad("fdt","ກະລຸນາເລືອກເມືອງ");if(!vl)return bad("fv","ກະລຸນາໃສ່ຊື່ບ້ານ");var rc=recvCheck(bad,br);if(rc!==null)return rc;
- if(pay=="transfer"&&!sf)return bad("fslip","ກະລຸນາແນບສະລິບໂອນເງິນ");
+ if(pay=="transfer"&&!sf)return bad("fslip","ກະລຸນາແນບສະລິບໂອນເງິນ");if(pay=="transfer"){var ie0=okImg(sf);if(ie0)return bad("fslip",ie0)}
  er.textContent="";var bt=document.querySelector('[data-o="preSend"]');if(bt)bt.disabled=true;
  try{
   var r=await sb.rpc("db_place_order",{p_items:[{id:p.id,q:qty}],p_name:nm,p_phone:ph,p_prov:pv,p_dist:dt,p_vil:vl,p_addr:recvAddr(),p_branch:recvBr(br),p_pay:pay});
   if(r.error)throw r.error;code=r.data;
-  if(pay=="transfer"){var du=await new Promise(function(ok){imgFile(sf,1200,ok)}),bl=await (await fetch(du)).blob(),path=S.user.id+"/"+code+".jpg",u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg"});
+  if(pay=="transfer"){var bl=await slipBlob(sf),path=S.user.id+"/"+code+".jpg",u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg",upsert:false});
    if(u.error)throw u.error;await sb.rpc("db_attach_slip",{p_code:code,p_path:path})}
   await loadOrders();await loadCatalog();var o=S.orders.filter(function(x){return x.code==code})[0]||{t:0,fee:0};
   openSh('<h2>✅ ຮັບອໍເດີ້ແລ້ວ</h2><div class="card"><h3>'+esc(code)+'</h3><p>ລວມ '+fmt(o.t+o.fee)+' · '+(pay=="transfer"?"ໂອນຝາກ (ລໍຖ້າແອດມິນກວດສະລິບ)":pay=="wallet"?"ຫັກຍອດເງິນແລ້ວ · ເຫຼືອ "+fmt(MYBAL):"ເກັບເງິນປາຍທາງ")+'</p></div><a class="btn" style="margin-top:12px" target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent("ສະບາຍດີ ຂ້ອຍສັ່ງຊື້ ລະຫັດ "+code)+'">💬 ແຈ້ງຮ້ານທາງ WhatsApp</a>')
@@ -1434,7 +1434,7 @@ function orderAdd(){if(!ADM.ok)return;if(sb){toast("ເພີ່ມອໍເດ�
 /* --- ສິນຄ້າ (ແອດມິນ) --- */
 function plOpts(v){return Object.keys(PL).map(function(k){return '<option value="'+k+'"'+(k==v?' selected':'')+'>'+PL[k]+'</option>'}).join("")}
 var ED={id:null,img:""},CR={};
-function thumb(p){var C=CATS.filter(function(c){return c.id==p.cat})[0]||CATS[0];return '<span class="th" style="background:linear-gradient(135deg,'+C.c+')">'+(p.img?'<img src="'+esc(p.img)+'" alt="">':C.g)+"</span>"}
+function thumb(p){var C=CATS.filter(function(c){return c.id==p.cat})[0]||CATS[0];return '<span class="th" style="background:linear-gradient(135deg,'+esc(C.c)+')">'+(p.img?'<img src="'+esc(p.img)+'" alt="">':esc(C.g))+"</span>"}
 function prodAdmin(){var el=$("ab");if(!el)return;
  el.innerHTML='<button class="btn" data-pa="new">➕ ເພີ່ມສິນຄ້າໃໝ່</button><div style="margin-top:6px">'+(S.prods.length?S.prods.map(function(p){return '<button class="prow" data-pa="edit" data-id="'+esc(p.id)+'">'+thumb(p)+'<span class="pi"><b>'+esc(p.name)+"</b><small>"+esc(catName(p.cat))+" · "+fmt(eff(p))+(isPromo(p)?" 🔥":"")+" · ໂຄຕ້າ "+(p.unl?"ບໍ່ຈຳກັດ":p.stock)+'</small></span><span class="tag '+(p.active?"ok":"wt")+'">'+(p.active?"ເປີດຂາຍ":"ປິດ")+"</span></button>"}).join(""):'<div class="empty">ຍັງບໍ່ມີສິນຄ້າ</div>')+"</div>"}
 function edPrev(){$("edp").innerHTML=thumb({cat:$("ec").value,img:ED.img})}
@@ -1469,8 +1469,8 @@ function cropDraw(){var c=$("cv"),x=c.getContext("2d"),W=c.width,im=CR.im;if(!im
 /* --- ເຂົ້າສູ່ລະບົບ (ແອດມິນ/ສະມາຊິກ) --- */
 var mode="in";
 function openM(m){closeSh();vfHide();setMode(m||"in");$("modal").classList.add("on");$("err").textContent=""}
-function setMode(m){mode=m;$("tl").classList.toggle("on",m=="in");$("tr").classList.toggle("on",m=="up");$("pw2").hidden=m=="in";$("nm").hidden=m=="in";$("go").textContent=m=="in"?"ເຂົ້າສູ່ລະບົບ":"ສະໝັກສະມາຊິກ";$("mh").textContent=m=="in"?"ເຂົ້າສູ່ລະບົບເພື່ອສັ່ງຊື້ ແລະ ຕິດຕາມອໍເດີ້":"ໃຊ້ອີເມວຈິງ ເຮົາຈະສົ່ງລະຫັດຢືນຢັນໄປໃຫ້";$("un").placeholder=m=="in"?"ອີເມວ":"ອີເມວ (ຕ້ອງເປັນອີເມວຈິງ)";$("pw").autocomplete=m=="in"?"current-password":"new-password";$("err").textContent=""}
-["un","nm","pw","pw2","vc"].forEach(function(id){$(id).addEventListener("keydown",function(e){if(e.key=="Enter")$(id=="vc"?"vgo":"go").click()})});$("tl").onclick=function(){setMode("in")};$("tr").onclick=function(){setMode("up")};$("x").onclick=function(){$("modal").classList.remove("on")};
+function setMode(m){mode=m;$("tl").classList.toggle("on",m=="in");$("tr").classList.toggle("on",m=="up");$("pw2").hidden=m=="in";$("sph").hidden=m=="in";$("nm").hidden=m=="in";$("go").textContent=m=="in"?"ເຂົ້າສູ່ລະບົບ":"ສະໝັກສະມາຊິກ";$("mh").textContent=m=="in"?"ເຂົ້າສູ່ລະບົບເພື່ອສັ່ງຊື້ ແລະ ຕິດຕາມອໍເດີ້":"ໃສ່ອີເມວຈິງ ແລະ ເບີໂທ ເຮົາຈະສົ່ງລະຫັດຢືນຢັນໄປທາງອີເມວ";$("un").placeholder=m=="in"?"ອີເມວ":"ອີເມວ (ຕ້ອງເປັນອີເມວຈິງ)";$("pw").autocomplete=m=="in"?"current-password":"new-password";$("err").textContent=""}
+["un","sph","nm","pw","pw2","vc"].forEach(function(id){$(id).addEventListener("keydown",function(e){if(e.key=="Enter")$(id=="vc"?"vgo":"go").click()})});$("tl").onclick=function(){setMode("in")};$("tr").onclick=function(){setMode("up")};$("x").onclick=function(){$("modal").classList.remove("on")};
 var FD="@xevion-tech.com";
 function toEm(v){v=String(v||"").trim().toLowerCase();return v.indexOf("@")>0?v:v+FD}
 function showId(e){e=String(e||"");return e.slice(-FD.length)==FD?e.slice(0,-FD.length):e}
@@ -1484,17 +1484,18 @@ async function loadMe(){
 var VF="",TYPO={"gmil.com":"gmail.com","gmial.com":"gmail.com","gamil.com":"gmail.com","gmal.com":"gmail.com","gmai.com":"gmail.com","gmail.con":"gmail.com","gmail.co":"gmail.com","gmail.cm":"gmail.com","gmaill.com":"gmail.com","hotmial.com":"hotmail.com","hotmal.com":"hotmail.com","yaho.com":"yahoo.com","yahho.com":"yahoo.com","outlok.com":"outlook.com"};
 function vfShow(em){VF=em;$("fm").classList.add("hid");$("vf").classList.remove("hid");$("tl").parentNode.classList.add("hid");$("mh").textContent="ເຮົາສົ່ງລະຫັດໄປທີ່ "+em+" ແລ້ວ ກະລຸນາເບິ່ງໃນອີເມວ (ລວມທັງ Spam)";$("verr").textContent="";$("vc").value=""}
 function vfHide(){$("fm").classList.remove("hid");$("vf").classList.add("hid");$("tl").parentNode.classList.remove("hid")}
-function emMsg(m){m=String(m||"");return /rate limit|too many|seconds/i.test(m)?"ສົ່ງອີເມວຫຼາຍເກີນໄປ ລໍຖ້າສັກຄູ່ແລ້ວລອງໃໝ່":m}
+function emMsg(m){m=String(m||"");return /rate limit|too many|seconds/i.test(m)?"ສົ່ງອີເມວຫຼາຍເກີນໄປ ລໍຖ້າສັກຄູ່ແລ້ວລອງໃໝ່":/database error|saving new user/i.test(m)?"ສະໝັກບໍ່ໄດ້: ເບີໂທນີ້ຖືກໃຊ້ແລ້ວ, ອີເມວຊົ່ວຄາວບໍ່ອະນຸຍາດ ຫຼື ຂໍ້ມູນບໍ່ຖືກຕ້ອງ":m}
 $("go").onclick=async function(){var u=$("un").value.trim().toLowerCase(),p=$("pw").value,er=$("err");
  if(!sb){er.textContent="ຍັງບໍ່ໄດ້ເຊື່ອມ Supabase";return}
  if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(u)){er.textContent="ກະລຸນາໃສ່ອີເມວທີ່ຖືກຕ້ອງ";return}
  var dm=u.split("@")[1];if(TYPO[dm]){er.textContent="ອີເມວຜິດບໍ? ໝາຍເຖິງ @"+TYPO[dm]+" ຫຼືບໍ່";return}
  if(p.length<8){er.textContent="ລະຫັດຜ່ານຕ້ອງມີຢ່າງນ້ອຍ 8 ຕົວອັກສອນ";return}
  if(mode=="up"&&p!==$("pw2").value){er.textContent="ລະຫັດຜ່ານສອງຄັ້ງບໍ່ຕົງກັນ";return}
+ var sph=mode=="up"?lao20($("sph").value):"";if(mode=="up"&&!sph){er.textContent="ກະລຸນາໃສ່ເບີໂທລາວໃຫ້ຖືກ (20 xxxx xxxx)";return}
  er.textContent="";$("go").disabled=true;
  try{
   if(mode=="up"){
-   var r=await sb.auth.signUp({email:u,password:p,options:{data:{username:$("nm").value.trim()||u.split("@")[0]},emailRedirectTo:location.protocol.indexOf("http")==0?location.href.split("#")[0]:undefined}});
+   var r=await sb.auth.signUp({email:u,password:p,options:{data:{username:$("nm").value.trim()||u.split("@")[0],phone:sph},emailRedirectTo:location.protocol.indexOf("http")==0?location.href.split("#")[0]:undefined}});
    if(r.error){er.textContent=emMsg(r.error.message);return}
    var dup=!!(r.data.user&&r.data.user.identities&&!r.data.user.identities.length);
    if(dup){var r3=await sb.auth.signInWithPassword({email:u,password:p});
@@ -1636,7 +1637,7 @@ function balSave(){var w=S.wallets[BAL.k];if(!w)return;var raw=$("bam").value.tr
 var CPAL=[["ຟ້າ","#2b78d8,#6cb6ff"],["ເທົາ","#3b4252,#8a94a3"],["ຟ້າອ່ອນ","#5aa9e6,#bcdcf5"],["ດຳ","#1f2329,#4a525e"],["ຂຽວ","#2f8f6f,#7fd1b0"],["ສົ້ມ","#d98a2b,#f2c46d"]];
 function catAdmin(){var el=$("ab");if(!el)return;
  el.innerHTML='<button class="btn" data-x="catedit" data-id="">➕ ເພີ່ມໝວດໝູ່ໃໝ່</button><div style="margin-top:6px">'+CATS.map(function(c,i){var n=S.prods.filter(function(p){return p.cat==c.id}).length;
-  return '<div class="prow"><span class="th" style="background:linear-gradient(135deg,'+c.c+')">'+esc(c.g)+'</span><span class="pi"><b>'+esc(c.n)+"</b><small>"+n+' ສິນຄ້າ</small></span><button class="ib" data-x="catup" data-id="'+esc(c.id)+'" aria-label="ຍ້າຍຂຶ້ນ"'+(i?"":" disabled")+'>↑</button><button class="ib" data-x="catdn" data-id="'+esc(c.id)+'" aria-label="ຍ້າຍລົງ"'+(i<CATS.length-1?"":" disabled")+'>↓</button><button class="ib" data-x="catedit" data-id="'+esc(c.id)+'" aria-label="ແກ້ໄຂ">✏️</button></div>'}).join("")+"</div>"}
+  return '<div class="prow"><span class="th" style="background:linear-gradient(135deg,'+esc(c.c)+')">'+esc(c.g)+'</span><span class="pi"><b>'+esc(c.n)+"</b><small>"+n+' ສິນຄ້າ</small></span><button class="ib" data-x="catup" data-id="'+esc(c.id)+'" aria-label="ຍ້າຍຂຶ້ນ"'+(i?"":" disabled")+'>↑</button><button class="ib" data-x="catdn" data-id="'+esc(c.id)+'" aria-label="ຍ້າຍລົງ"'+(i<CATS.length-1?"":" disabled")+'>↓</button><button class="ib" data-x="catedit" data-id="'+esc(c.id)+'" aria-label="ແກ້ໄຂ">✏️</button></div>'}).join("")+"</div>"}
 function catForm(id){var c=CATS.filter(function(x){return x.id==id})[0]||{n:"",g:"",c:CPAL[0][1]};
  openSh("<h2>"+(id?"ແກ້ໄຂໝວດໝູ່":"ເພີ່ມໝວດໝູ່")+'</h2><div class="f" style="margin-top:12px" id="cf" data-id="'+esc(id)+'"><label class="lb" for="cn">ຊື່ໝວດໝູ່</label><input id="cn" value="'+esc(c.n)+'" placeholder="ເຊັ່ນ ເຄື່ອງເສີມ"><label class="lb" for="cg">ໄອຄອນ (emoji)</label><input id="cg" value="'+esc(c.g)+'" maxlength="4" placeholder="🏋️"><label class="lb" for="cc">ສີ</label><select id="cc">'+CPAL.map(function(p){return '<option value="'+p[1]+'"'+(p[1]==c.c?" selected":"")+">"+p[0]+"</option>"}).join("")+'</select><button class="btn" data-x="catsave">ບັນທຶກ</button>'+(id?'<button class="btn ghost" data-x="catdel" style="color:var(--bad)">ລຶບໝວດໝູ່</button>':"")+"</div>")}
 function catDone(m){save();catAdmin();chips();grid();if(m)toast(m)}
@@ -1672,6 +1673,20 @@ S.banners=Array.isArray(S.banners)?S.banners:[];
 S.orders.forEach(function(o){if(o.trk==null)o.trk="";if(o.billed==null)o.billed=false});
 function isImg(s){return /^(data:image\/|https:\/\/)/.test(s||"")}
 function imgFile(f,w,cb){var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var k=Math.min(1,w/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);cb(c.toDataURL("image/jpeg",.78))};im.onerror=function(){toast("ເປີດຮູບບໍ່ໄດ້")};im.src=u}
+/* ກົດຮູບສະລິບໃຫ້ <= 450KB ກ່ອນອັບ (ເຊີບເວີຈຳກັດ 600KB) */
+function slipBlob(f){return new Promise(function(ok,no){var done=false,tm=setTimeout(function(){if(!done){done=true;no(new Error("ອ່ານຮູບບໍ່ໄດ້"))}},20000);
+ function fin(fn,v){if(done)return;done=true;clearTimeout(tm);fn(v)}
+ var im=new Image(),u=URL.createObjectURL(f);
+ im.onerror=function(){URL.revokeObjectURL(u);fin(no,new Error("ເປີດຮູບບໍ່ໄດ້"))};
+ im.onload=function(){URL.revokeObjectURL(u);var ws=[1200,1000,800,640],qs=[.78,.66,.54,.42],wi=0,qi=0;
+  (function step(){var k=Math.min(1,ws[wi]/im.width),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+   c.toBlob(function(b){if(!b)return fin(no,new Error("ບີບຮູບບໍ່ໄດ້"));
+    if(b.size<=450*1024)return fin(ok,b);
+    if(qi<qs.length-1)qi++;else if(wi<ws.length-1){wi++;qi=0}else return fin(no,new Error("ຮູບໃຫຍ່ເກີນ ກະລຸນາຖ່າຍຮູບສະລິບໃໝ່ໃຫ້ນ້ອຍລົງ"));
+    step()},"image/jpeg",qs[qi])})()};
+ im.src=u})}
+/* ລາຍນິ້ວມືຂອງສະລິບ (SHA-256) ໃຊ້ກັນເອົາສະລິບໃບດຽວມາເຕີມເງິນຊ້ຳ */
+async function slipHash(b){try{if(!(window.crypto&&crypto.subtle))return null;var d=await crypto.subtle.digest("SHA-256",await b.arrayBuffer());return Array.prototype.map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")}catch(e){return null}}
 function bnHtml(){var L=S.banners.filter(function(b){return b.active});return L.length?'<div class="bn">'+L.map(function(b){return '<div class="bnr">'+(isImg(b.img)?'<img src="'+esc(b.img)+'" alt="">':"")+'<b>'+esc(b.title)+'</b>'+(b.sub?'<span>'+esc(b.sub)+'</span>':"")+'</div>'}).join("")+'</div>':""}
 var BN={id:null,img:""};
 function bnAdmin(){var el=$("ab");if(!el)return;
@@ -1747,7 +1762,7 @@ function openCart(){if(!ctLines().length){ctEmpty();return}
  openSh('<h2>🛒 ກະຕ່າ</h2><div id="cl">'+ctRows()+'</div><div class="f" style="margin-top:12px" id="pf"><input id="fn" placeholder="ຊື່ຜູ້ຮັບ" autocomplete="name" value="'+esc(myName())+'">'+phIn("fp",(S.guest||{}).ph)+
  ''+locHtml()+'<input id="fv" placeholder="ບ້ານ"><input id="fa" placeholder="ທີ່ຢູ່ລະອຽດ (ເລກເຮືອນ, ຖະໜົນ, ຈຸດສັງເກດ)"><input id="fb" placeholder="ສາຂາ'+esc(CONFIG.carrier)+'ທີ່ຕ້ອງການຮັບ">'+
  '<div class="row"><input id="fc" placeholder="ລະຫັດສ່ວນຫຼຸດ" value="'+esc(CPN.code)+'" style="text-transform:uppercase"><button class="btn ghost sm" data-ct="cp">ໃຊ້</button></div>'+
- '<label class="lb" for="fpay">ວິທີຊຳລະ</label><select id="fpay"><option value="wallet">💰 ຈ່າຍດ້ວຍຍອດເງິນ (ຫັກທັນທີ)</option><option value="cod">ເກັບເງິນປາຍທາງ</option></select><div id="fslipw" hidden>'+(CONFIG.qr?'<img src="'+esc(CONFIG.qr)+'" alt="LDB QR" style="width:100%;border-radius:16px;margin-bottom:8px">':'<p>ຍັງບໍ່ໄດ້ຕັ້ງ QR ກະລຸນາຕິດຕໍ່ຮ້ານ</p>')+'<label class="lb" for="fslip">ແນບສະລິບຫຼັງໂອນ</label><input id="fslip" type="file" accept="image/*"></div>'+
+ '<label class="lb" for="fpay">ວິທີຊຳລະ</label><select id="fpay"><option value="cod">💵 ເກັບເງິນປາຍທາງ (ບໍ່ຕ້ອງເຕີມເງິນ)</option><option value="wallet">💰 ຈ່າຍດ້ວຍຍອດເງິນ (ຫັກທັນທີ)</option></select><p class="mh" style="margin:6px 0 0">ເກັບເງິນປາຍທາງ: ຮ້ານຈະໂທ/WhatsApp ຢືນຢັນກ່ອນຈັດສົ່ງ ແລ້ວຈ່າຍເງິນຕອນຮັບສິນຄ້າ</p><div id="fslipw" hidden>'+(CONFIG.qr?'<img src="'+esc(CONFIG.qr)+'" alt="LDB QR" style="width:100%;border-radius:16px;margin-bottom:8px">':'<p>ຍັງບໍ່ໄດ້ຕັ້ງ QR ກະລຸນາຕິດຕໍ່ຮ້ານ</p>')+'<label class="lb" for="fslip">ແນບສະລິບຫຼັງໂອນ</label><input id="fslip" type="file" accept="image/*"></div>'+
  '<div class="card" id="fsum" style="margin:0"></div><div class="err" id="ferr" role="alert"></div><button class="btn" data-o="ctSend">ຢືນຢັນສັ່ງຊື້</button></div>');ctSum()}
 async function cpCheck(q){var c=($("fc")?$("fc").value:CPN.code).trim().toUpperCase();
  if(!c){CPN={code:"",disc:0};ctSum();return}
@@ -1762,14 +1777,14 @@ async function ctSend(){var er=$("ferr"),code="",L=ctLines();
  if(!nm)return bad("fn","ກະລຸນາໃສ່ຊື່");
  if(!ph)return bad("fp","ເບີໂທຕ້ອງເປັນ +856 20 xxxx xxxx");
  if(!pv)return bad("fpv","ກະລຸນາເລືອກແຂວງກ່ອນ");if(!dt)return bad("fdt","ກະລຸນາເລືອກເມືອງ");if(!vl)return bad("fv","ກະລຸນາໃສ່ຊື່ບ້ານ");var rc=recvCheck(bad,br);if(rc!==null)return rc;
- if(pay=="transfer"&&!sf)return bad("fslip","ກະລຸນາແນບສະລິບໂອນເງິນ");
+ if(pay=="transfer"&&!sf)return bad("fslip","ກະລຸນາແນບສະລິບໂອນເງິນ");if(pay=="transfer"){var ie0=okImg(sf);if(ie0)return bad("fslip",ie0)}
  if(pay=="wallet"){await loadMyBal();var need=ctSub()-Math.min(ctSub(),CPN.disc||0)+CONFIG.fee;if(MYBAL<need)return bad("fpay","ຍອດເງິນບໍ່ພໍ (ມີ "+fmt(MYBAL)+" ຕ້ອງການ "+fmt(need)+") ກະລຸນາເຕີມເງິນກ່ອນ ຫຼື ເລືອກວິທີຊຳລະອື່ນ")}
  er.textContent="";var bt=document.querySelector('[data-o="ctSend"]');if(bt)bt.disabled=true;
  try{
   var r=await sb.rpc("db_place_order",{p_items:L.map(function(x){return{id:x.p.id,q:x.q}}),p_name:nm,p_phone:ph,p_prov:pv,p_dist:dt,p_vil:vl,p_addr:recvAddr(),p_branch:recvBr(br),p_pay:pay=="wallet"?"cod":pay,p_coupon:CPN.code||null});
   if(r.error)throw r.error;code=r.data;CT=[];CPN={code:"",disc:0};ctSave();S.guest={name:nm,ph:ph};save();
   if(pay=="wallet"){var wr=await sb.rpc("db_pay_wallet",{p_code:code});if(wr.error){await loadOrders();await loadCatalog();await loadMyBal();throw new Error("ສັ່ງແລ້ວ ("+code+") ແຕ່ຫັກເງິນບໍ່ສຳເລັດ: "+wr.error.message+" — ຍັງບໍ່ໄດ້ຫັກເງິນ ກະລຸນາຕິດຕໍ່ຮ້ານ")}MYBAL=Number(wr.data);head()}
-  if(pay=="transfer"){var du=await new Promise(function(ok){imgFile(sf,1200,ok)}),bl=await (await fetch(du)).blob(),path=S.user.id+"/"+code+".jpg",u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg"});
+  if(pay=="transfer"){var bl=await slipBlob(sf),path=S.user.id+"/"+code+".jpg",u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg",upsert:false});
    if(u.error)throw u.error;await sb.rpc("db_attach_slip",{p_code:code,p_path:path})}
   await loadOrders();await loadCatalog();var o=S.orders.filter(function(x){return x.code==code})[0]||{t:0,fee:0};
   openSh('<h2>✅ ຮັບອໍເດີ້ແລ້ວ</h2><div class="card"><h3>'+esc(code)+'</h3><p>ລວມ '+fmt(o.t+o.fee)+' · '+(pay=="transfer"?"ໂອນຝາກ (ລໍຖ້າແອດມິນກວດສະລິບ)":pay=="wallet"?"ຫັກຍອດເງິນແລ້ວ · ເຫຼືອ "+fmt(MYBAL):"ເກັບເງິນປາຍທາງ")+'</p></div><a class="btn" style="margin-top:12px" target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent("ສະບາຍດີ ຂ້ອຍສັ່ງຊື້ ລະຫັດ "+code)+'">💬 ແຈ້ງຮ້ານທາງ WhatsApp</a>')
@@ -1830,8 +1845,8 @@ async function loadCatalog(){
   if(st){CONFIG.qr=/^(https:\/\/|data:image\/)/.test(st.qr_url||"")?st.qr_url:"";CONFIG.name=st.shop_name||CONFIG.name;CONFIG.tagline=st.tagline||CONFIG.tagline;CONFIG.fee=st.ship_fee;CONFIG.carrier=st.carrier||CONFIG.carrier;if(st.whatsapp)CONFIG.whatsapp=String(st.whatsapp).replace(/\D/g,"")}
   if(r[1]){CATS=r[1].filter(function(c){return c.active}).map(function(c,i){return{id:c.id,n:c.name,g:c.icon||"🏋️",c:GR[i%GR.length]}});S.cats=CATS}
   if(r[2])S.prods=r[2].map(function(p){var pp=p.disc_on&&p.disc_pct>0?Math.round(p.price*(100-p.disc_pct)/100):0;
-   return{id:p.id,cat:p.cat_id,name:p.name,price:p.price,stock:p.unlimited?99:p.stock,unl:!!p.unlimited,active:p.active,place:"both",promo:pp>0,pp:pp,img:(p.images&&p.images[0])||""}});
-  if(r[3])S.banners=r[3].map(function(b){return{id:b.id,title:b.title||"",sub:b.sub||"",img:b.img||"",active:b.active}});
+   return{id:p.id,cat:p.cat_id,name:p.name,price:p.price,stock:p.unlimited?99:p.stock,unl:!!p.unlimited,active:p.active,place:"both",promo:pp>0,pp:pp,img:/^(https:\/\/|data:image\/)/.test((p.images&&p.images[0])||"")?p.images[0]:""}});
+  if(r[3])S.banners=r[3].map(function(b){return{id:b.id,title:b.title||"",sub:b.sub||"",img:/^(https:\/\/|data:image\/)/.test(b.img||"")?b.img:"",active:b.active}});
  }catch(e){errs.push("parse: "+(e.message||e))}
  LOADERR=errs.join(" | ");
  try{rebuildP();render()}catch(e){}
@@ -1997,7 +2012,7 @@ async function refreshLive(){if(!S.user||document.hidden)return;
   var a=document.activeElement,typing=a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName);
   if($("adm").classList.contains("on")&&!typing&&!$("sheet").classList.contains("on")){
    if(ADM.tab=="o"&&$("ol"))orderList();else if(ADM.tab=="w"&&$("tpadm"))topDraw()}}catch(e){}}
-function startLive(){if(POLL||!sb)return;POLL=setInterval(refreshLive,10000);
+function startLive(){if(POLL||!sb)return;POLL=setInterval(refreshLive,30000);
  document.addEventListener("visibilitychange",function(){if(!document.hidden)refreshLive()});
  try{LIVE=sb.channel("dbwatch").on("postgres_changes",{event:"*",schema:"public",table:"db_orders"},function(){refreshLive()}).on("postgres_changes",{event:"*",schema:"public",table:"db_topups"},function(){refreshLive()}).subscribe()}catch(e){}}
 
@@ -2007,7 +2022,7 @@ var PAY=[
  {id:"um",n:"Umoney",name:"Umoney",acc:"+856 20 9126 4622",emv:"0002010102111531203104180052044600000001962102238630016A005266284662577010880020418020300103201011200000001962102253034185802LA630443b5"}];
 var TPRE=[20,30,50,70,100]; /* ຫົວໜ່ວຍ ແສນ (1 ແສນ = 100,000 ₭) — ແກ້ເລກຢູ່ນີ້ໄດ້ */
 var TPMIN=1,TPMAX=100000000,TP={amt:0,custom:false,pay:"ldb",emv:""},TPERR="",TPU={};
-var TP_SQL=["-- ເຕີມເງິນ (top-up) : run once in Supabase -> SQL Editor", "create table if not exists public.db_topups(", "  id bigint generated always as identity primary key,", "  user_id uuid not null default auth.uid(),", "  code text not null,", "  amount bigint not null check (amount >= 1 and amount <= 100000000),", "  method text not null default 'ldb',", "  slip_path text,", "  status text not null default 'pend' check (status in ('pend','ok','no')),", "  created_at timestamptz not null default now(),", "  decided_at timestamptz", ");", "alter table public.db_topups enable row level security;", "drop policy if exists \"topups_select\" on public.db_topups;", "create policy \"topups_select\" on public.db_topups for select to authenticated", "  using (user_id = auth.uid() or public.admin_check());", "drop policy if exists \"topups_insert\" on public.db_topups;", "create policy \"topups_insert\" on public.db_topups for insert to authenticated", "  with check (user_id = auth.uid() and status = 'pend');", "grant select, insert on public.db_topups to authenticated;", "alter table public.db_topups drop constraint if exists db_topups_amount_check;", "alter table public.db_topups add constraint db_topups_amount_check check (amount >= 1 and amount <= 100000000);", "", "create or replace function public.db_topup_decide(p_id bigint, p_ok boolean)", "returns text language plpgsql security definer set search_path = public as $fn$", "declare t public.db_topups;", "begin", "  if not public.admin_check() then raise exception 'admin only'; end if;", "  select * into t from public.db_topups where id = p_id for update;", "  if not found then raise exception 'not found'; end if;", "  if t.status <> 'pend' then raise exception 'already decided'; end if;", "  if p_ok then perform public.db_wallet_adjust(t.user_id, t.amount, 'Top-up ' || t.code); end if;", "  update public.db_topups set status = case when p_ok then 'ok' else 'no' end, decided_at = now() where id = p_id;", "  return case when p_ok then 'ok' else 'no' end;", "end;", "$fn$;", "grant execute on function public.db_topup_decide(bigint, boolean) to authenticated;", ""].join("\n");
+var TP_SQL="-- (SQL removed from the page for security; run it from your private SQL file)";
 function emvParse(s){var r=[],i=0;while(i+4<=s.length){var l=parseInt(s.substr(i+2,2),10);if(isNaN(l))break;r.push([s.substr(i,2),s.substr(i+4,l)]);i+=4+l}return r}
 function emvCrc(s){var c=0xFFFF;for(var i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(var j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return("000"+c.toString(16).toUpperCase()).slice(-4)}
 /* ປ່ຽນ LAO QR ແບບຄົງທີ່ (static) → ແບບມີຈຳນວນເງິນ (tag 54) ແລ້ວຄຳນວນ CRC ໃໝ່ */
@@ -2068,12 +2083,15 @@ async function tpSubmit(){var er=$("tperr"),f=$("tps").files[0];
  var ie=okImg(f);if(ie){er.textContent=ie==="ກະລຸນາເລືອກຮູບ"?"ກະລຸນາສົ່ງຮູບສະລິບການໂອນ":ie;toast(er.textContent);$("tps").scrollIntoView({block:"center",behavior:"smooth"});return}
  var bt=document.querySelector('[data-tp="submit"]');if(bt)bt.disabled=true;er.textContent="";
  var code="TU"+String(Date.now()).slice(-6),path=S.user.id+"/"+code+".jpg";
- try{var du=await new Promise(function(ok,no){imgFile(f,1200,ok);setTimeout(function(){no(new Error("ອ່ານຮູບບໍ່ໄດ້"))},15000)}),
-   bl=await (await fetch(du)).blob(),u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg"});
+ try{var bl=await slipBlob(f),hx=await slipHash(bl),u=await sb.storage.from("db-slip").upload(path,bl,{contentType:"image/jpeg",upsert:false});
   if(u.error)throw u.error;
-  var r=await sb.from("db_topups").insert({code:code,amount:TP.amt,method:TP.pay,slip_path:path});if(r.error)throw r.error;
+  var row={code:code,amount:TP.amt,method:TP.pay,slip_path:path};if(hx)row.slip_hash=hx;
+  var r=await sb.from("db_topups").insert(row);
+  if(r.error&&hx&&/slip_hash|schema cache|column/i.test(String(r.error.message||""))){delete row.slip_hash;r=await sb.from("db_topups").insert(row)}
+  if(r.error&&/duplicate|unique/i.test(String(r.error.message||"")))throw new Error("ສະລິບໃບນີ້ເຄີຍຖືກສົ່ງແລ້ວ ກະລຸນາໃຊ້ສະລິບໃໝ່ຂອງການໂອນຄັ້ງນີ້");
+  if(r.error)throw r.error;
   tpPendClear();await loadTopups();tpDone(code)}
- catch(e){er.textContent="ສົ່ງບໍ່ໄດ້: "+(/check constraint/i.test(String(e.message||e))?"ຍອດຕ່ຳກວ່າທີ່ຖານຂໍ້ມູນອະນຸຍາດ (ແອດມິນຕ້ອງ run SQL ປັບຂັ້ນຕ່ຳເປັນ 1 ₭)":(e.message||e))+" — ກົດປຸ່ມ WhatsApp ດ້ານລຸ່ມເພື່ອສົ່ງສະລິບໃຫ້ແອດມິນແທນ"}
+ catch(e){er.textContent="ສົ່ງບໍ່ໄດ້: "+(/row-level security|exceeded|too large|mime/i.test(String(e.message||e))?"ອັບຖີ່ເກີນໄປ ຫຼື ໄຟລ໌ບໍ່ຖືກຕ້ອງ ກະລຸນາລໍຖ້າ 10 ນາທີ ແລ້ວລອງໃໝ່":/check constraint/i.test(String(e.message||e))?"ຍອດຕ່ຳກວ່າທີ່ຖານຂໍ້ມູນອະນຸຍາດ (ແອດມິນຕ້ອງ run SQL ປັບຂັ້ນຕ່ຳເປັນ 1 ₭)":(e.message||e))+" — ກົດປຸ່ມ WhatsApp ດ້ານລຸ່ມເພື່ອສົ່ງສະລິບໃຫ້ແອດມິນແທນ"}
  finally{if(bt)bt.disabled=false}}
 function tpDone(code){var a=TP.amt;TP.amt=0;TP.custom=false;
  openSh('<h2>✅ ສົ່ງຄຳຂໍເຕີມເງິນແລ້ວ</h2><div class="card"><h3>'+esc(code)+'</h3><p>'+fmt(a)+' · ລໍຖ້າແອດມິນກວດສະລິບ ແລ້ວເຕີມຍອດໃຫ້ ເຈົ້າຈະໄດ້ຮັບແຈ້ງເຕືອນໃນແອັບ</p></div><button class="btn" data-x="topup" style="margin-top:12px">ເບິ່ງປະຫວັດເຕີມເງິນ</button>')}
