@@ -406,6 +406,23 @@ body.gated{overflow:hidden}body.gated>*:not(#gate):not(script){visibility:hidden
 .gor{display:flex;align-items:center;gap:10px;color:#6F6A63;font-size:13px;margin:14px 0}.gor:before,.gor:after{content:"";flex:1;height:1px;background:#E3DFD8}
 .gg{display:flex;align-items:center;justify-content:center;gap:10px}.gg svg{width:20px;height:20px}
 @media(prefers-reduced-motion:reduce){#gate *{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important;transition-delay:0s!important}}
+
+/* ===== ໜ້າເຕີມເງິນ ===== */
+.tpc{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#fff;border:1.5px solid #FFE3CC;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px #FF6A0014;transition:.2s}
+.tpc:active{transform:scale(.98)}.tpc:hover{border-color:var(--fire)}
+.tpc .tpi{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,#FFA040,#FF5A2C);color:#fff;font-size:30px}
+.tpc .tpt{flex:1}.tpc b{display:block;color:var(--fire2);font-size:17px;line-height:1.4}.tpc small{display:block;color:var(--mute);font-size:13px;line-height:1.4}
+.tpc .tpa{color:var(--fire);font-size:30px;line-height:1}
+.tpbox{background:#fff;border-radius:18px;padding:18px;border:1.5px solid #FFE3CC;margin-bottom:12px}
+.tpbox h1{margin:0 0 4px;font-size:22px;color:var(--fire2);display:flex;align-items:center;gap:8px;line-height:1.5}
+.tpbox p{margin:0 0 12px;color:var(--mute);font-size:14px}
+.tprow{display:flex;gap:10px}.tprow input{flex:1;min-width:0}.tprow .btn{flex:none}
+.tpchips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.tpchips button{min-height:48px;border-radius:14px;border:2px solid var(--fire);color:var(--fire2);font-weight:800;background:#fff;font-variant-numeric:tabular-nums}
+.tpchips button.on{background:var(--fire);color:#fff}
+.tptips{background:#F6F4F1;border-radius:14px;padding:14px 16px;margin-top:6px}
+.tptips b{color:var(--fire2)}.tptips ul{margin:6px 0 0;padding-left:20px}.tptips li{margin:4px 0;font-size:14px;color:#9A4300}
+.tpqr{display:block;width:100%;max-width:300px;margin:10px auto;border-radius:14px}
 </style>
 </head>
 <body class="gated">
@@ -425,6 +442,19 @@ body.gated{overflow:hidden}body.gated>*:not(#gate):not(script){visibility:hidden
 <div id="toasts" aria-live="polite"></div>
 <div id="mod"></div>
 <div id="pickwrap"></div>
+<style id="motion2">
+/* ===== ແອນິເມຊັນເພີ່ມ (ຈາກແນວຄິດວິດີໂອ): ປຸ່ມໂຫຼດ, ຕິກຖືກ, ຍອດ QR, ເວລາໃກ້ໝົດ ===== */
+.btn.ld{pointer-events:none;opacity:.92}
+.btn.ld::after{content:"";width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .7s linear infinite}
+.btn.sec.ld::after{border-color:rgba(0,0,0,.18);border-top-color:var(--moss)}
+.tst .ck{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:ckd .45s .2s ease forwards}
+@keyframes ckd{to{stroke-dashoffset:0}}
+.qramt{animation:vPop .6s cubic-bezier(.2,.7,.2,1) both}
+.sfx{display:inline-block;background:var(--fire);color:#fff;border-radius:8px;padding:1px 8px;font-weight:800;animation:sfxp 1.2s ease-in-out 2}
+@keyframes sfxp{50%{transform:scale(1.15)}}
+#qrcd.low{color:var(--err)!important;animation:lowp 1s ease-in-out infinite}
+@keyframes lowp{50%{transform:scale(1.12)}}
+</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const K=n=>Math.round(n).toLocaleString('en-US')+' ₭';
@@ -471,11 +501,11 @@ let wallet={bal:0,tx:[]},acc={users:{},admins:{}},ses={u:null,a:null},tops=[],ts
 const SHOP={phone:'+856 20 9126 4622',addr:'',hrs:'',chat:'https://wa.me/8562091264622',bank:'Umoney · 856 20 9126 4622',qr:'qr.jpg'};
 const pp=id=>P.find(p=>p.id==id);
 const fee=(w,pv)=>Math.round((w<=5?25000:w<=20?60000:60000+(w-20)*4000)*(pv==CAP?1:1.6)/1000)*1000;
-function calc(items,o){let sub=0,w=0,a=0;items.forEach(([id,q])=>{const p=pp(id);sub+=p.p*q;w+=cw(p)*q;if(p.asm)a+=q});const sh=o.ship!='pickup'&&items.length?fee(w,o.prov):0;const as=o.asm?a*ASM:0;return{sub,w,sh,as,a,tot:sub+sh+as}}
+function calc(items,o){let sub=0,w=0,a=0;items.forEach(([id,q])=>{const p=pp(id);sub+=p.p*q;w+=cw(p)*q;if(p.asm)a+=q});const sh=0; /* ຄ່າຂົນສົ່ງ: ຮ້ານແຈ້ງລູກຄ້າເອງ ບໍ່ຄິດໃນເວັບ */const as=o.asm?a*ASM:0;return{sub,w,sh,as,a,tot:sub+sh+as}}
 const items=()=>Object.entries(cart).filter(e=>e[1]>0).map(e=>[+e[0],e[1]]);
 let orders=[];load();
 /* ---------- helpers ---------- */
-function toast(type,title,msg){const d=document.createElement('div');const tt=$('#toasts');[...tt.children].filter(c=>c.dataset.k==title+msg).forEach(c=>c.remove());while(tt.children.length>=3)tt.firstChild.remove();d.dataset.k=title+msg;d.className='tst '+(type=='ok'?'':type);d.setAttribute('role',type=='err'?'alert':'status');d.innerHTML=`<div class="ti">${type=='ok'?'✓':type=='err'?'✕':'!'}</div><div><b>${esc(title)}</b><span>${esc(msg||'')}</span></div><div class="bar"></div>`;$('#toasts').appendChild(d);d.onclick=()=>x();const x=()=>{d.classList.add('out');setTimeout(()=>d.remove(),300)};setTimeout(x,3700)}
+function toast(type,title,msg){const d=document.createElement('div');const tt=$('#toasts');[...tt.children].filter(c=>c.dataset.k==title+msg).forEach(c=>c.remove());while(tt.children.length>=3)tt.firstChild.remove();d.dataset.k=title+msg;d.className='tst '+(type=='ok'?'':type);d.setAttribute('role',type=='err'?'alert':'status');d.innerHTML=`<div class="ti">${type=='ok'?'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="ck" pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg>':type=='err'?'✕':'!'}</div><div><b>${esc(title)}</b><span>${esc(msg||'')}</span></div><div class="bar"></div>`;$('#toasts').appendChild(d);d.onclick=()=>x();const x=()=>{d.classList.add('out');setTimeout(()=>d.remove(),300)};setTimeout(x,3700)}
 document.addEventListener('pointerdown',e=>{const b=e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='rip';const z=Math.max(r.width,r.height);s.style.cssText=`width:${z}px;height:${z}px;left:${e.clientX-r.left-z/2}px;top:${e.clientY-r.top-z/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),650)});
 function modal(h,sheet){walOpen=false;$('#mod').innerHTML=`<div class="modal ${sheet?'sheet':''}" onclick="if(event.target==this)closeModal()" role="dialog" aria-modal="true"><div class="mc" tabindex="-1">${h}</div></div>`;setTimeout(()=>{const m=document.querySelector('#mod .mc');if(m&&!m.contains(document.activeElement))m.focus()},30)}
 function closeModal(){walOpen=false;$('#mod').innerHTML=''}
@@ -510,13 +540,13 @@ function homeView(){
  <div class="lbl">ເປົ້າໝາຍ</div><div class="chips">${chip('g','cardio','ລົດນ້ຳໜັກ/ຄາດິໂອ')}${chip('g','strength','ສ້າງກ້າມ')}${chip('g','flex','ຢືດເສັ້ນ')}</div>
  <div id="rec"></div></div>
  <section class="sec" id="list"><h2 class="sech">ສິນຄ້າແນະນຳ${pErr?' <span class="tag info">ຂໍ້ມູນຕົວຢ່າງ</span>':''}</h2><div class="chips" style="margin-bottom:10px"><input type="search" id="qf" value="${esc(qF)}" placeholder="ຄົ້ນຫາຊື່ສິນຄ້າ..." maxlength="60" aria-label="ຄົ້ນຫາ" oninput="qF=this.value;lf()" style="flex:1;min-width:160px;padding:10px 14px;border:1px solid var(--line);border-radius:12px"></div><div id="grid" class="grid">${gridHtml()}</div></section>
- <section class="sec" id="trust"><div class="trust"><div>🚚 <b>ສົ່ງຕາມນ້ຳໜັກ</b><br>ເບິ່ງຄ່າສົ່ງໃນກະຕ່າ ກ່ອນຈ່າຍ</div><div>🛡 <b>ຮັບປະກັນ + ອະໄຫຼ່</b><br>ລະບຸໃນໜ້າສິນຄ້າທຸກຊິ້ນ</div><div>↩ <b>ຄືນສິນຄ້າໜັກ</b><br>ກົດລະບຽບບອກຊັດເຈນ</div></div></section>${contactBox()}</div>`}
+ <section class="sec" id="trust"><div class="trust"><div>🚚 <b>ຮ້ານແຈ້ງຄ່າຂົນສົ່ງ</b><br>ແຈ້ງຄ່າສົ່ງໃຫ້ກ່ອນສົ່ງເຄື່ອງ</div><div>🛡 <b>ຮັບປະກັນ + ອະໄຫຼ່</b><br>ລະບຸໃນໜ້າສິນຄ້າທຸກຊິ້ນ</div><div>↩ <b>ຄືນສິນຄ້າໜັກ</b><br>ກົດລະບຽບບອກຊັດເຈນ</div></div></section>${contactBox()}</div>`}
 function finder(){const p=P.filter(p=>p.on!==false&&p.sp<=fin.sp&&p.p<=fin.bd&&p.g==fin.g)[0];rec=p;$('#rec').innerHTML=p?`<div class="rec"><span style="font-size:40px;width:56px;height:56px;border-radius:12px;overflow:hidden;display:grid;place-items:center">${pimg(p)}</span><div style="flex:1"><b>${esc(p.n)}</b><br>${K(p.p)}</div><button class="btn sm sec" onclick="go('product',${p.id})">ເບິ່ງ</button></div>`:`<div class="warnbox" style="margin-top:14px">ຂໍອະໄພ ຍັງບໍ່ມີເຄື່ອງທີ່ຕົງກັບທັງ 3 ຂໍ້ນີ້ — ລອງເພີ່ມງົບ ຫຼື ປ່ຽນເປົ້າໝາຍ</div>`;
  document.querySelectorAll('.finder .chips').forEach((c,i)=>{const k=['sp','bd','g'][i],vals=[[1,2,3],[500000,3500000,99999999],['cardio','strength','flex']][i];c.querySelectorAll('.chip').forEach((b,j)=>b.classList.toggle('on',fin[k]==vals[j]))})}
 function prodView(){const p=pp(pid),low=stock[p.id]<=3;const ins=Math.round(p.p/6/1000)*1000;
  return `<div class="wrap"><div class="crumb"><button onclick="go('home')">← ກັບໄປໜ້າຫຼັກ</button></div><div class="pd"><div class="big" style="background:${p.bg}">${pimg(p)}</div><div><h1 style="font-size:26px;line-height:1.5;margin:0">${esc(p.n)}</h1><div class="price" style="font-size:30px">${K(p.p)}</div>${stock[p.id]==0?'<span class="tag err">ໝົດຊົ່ວຄາວ</span>':low?`<span class="tag">ເຫຼືອ ${stock[p.id]} ອັນ</span>`:'<span class="tag ok">ມີສິນຄ້າ</span>'}
  <div class="box" style="margin-top:12px"><h3>ສະເປັກ</h3><table>${p.spec.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}<tr><td>ນ້ຳໜັກຕົວເຄື່ອງ</td><td>${p.w} ກກ</td></tr></table></div>
- <div class="box"><h3>🚚 ຄ່າສົ່ງ ແລະ ບໍລິການ</h3><div class="f"><label>ສົ່ງໄປ (ແຂວງ / ເມືອງ)</label>${locHtml()}</div><div class="row"><span>ຄ່າສົ່ງ (ຄິດຈາກ ${cw(p).toFixed(1)} ກກ)</span><b>${K(fee(cw(p),opt.prov))}</b></div><small style="color:var(--mute)">ຄ່າສົ່ງເປັນຕົວເລກປະມານ ຮ້ານຈະຢືນຢັນກ່ອນສົ່ງ</small></div>
+ <div class="box"><h3>🚚 ການຈັດສົ່ງ ແລະ ບໍລິການ</h3><div class="f"><label>ສົ່ງໄປ (ແຂວງ / ເມືອງ)</label>${locHtml()}</div><div class="row"><span>ຄ່າຂົນສົ່ງ</span><b>ຮ້ານແຈ້ງໃຫ້</b></div><small style="color:var(--mute)">ຍອດໃນເວັບແມ່ນລາຄາສິນຄ້າ — ຮ້ານຈະແຈ້ງຄ່າຂົນສົ່ງໃຫ້ກ່ອນສົ່ງ</small></div>
  <div class="box"><h3>🛡 ຮັບປະກັນ</h3>${esc(p.wr)}<br><small style="color:var(--mute)">ອະໄຫຼ່ ແລະ ແຈ້ງສ້ອມ: ຕິດຕໍ່ຮ້ານພ້ອມເລກຄຳສັ່ງຊື້</small></div>
  ${p.w>10?`<div class="box"><h3>↩ ຄືນສິນຄ້າໜັກ</h3>ຄືນໄດ້ພາຍໃນ 7 ວັນ ຖ້າຍັງບໍ່ໄດ້ໃຊ້ ແລະ ຢູ່ໃນຫີບເດີມ. ຮ້ານສົ່ງຜິດ ຫຼື ເຄື່ອງເສຍ → ຮ້ານຈ່າຍຄ່າສົ່ງຄືນ. ລູກຄ້າປ່ຽນໃຈ → ລູກຄ້າຈ່າຍຄ່າສົ່ງຄືນ.</div>`:''}
  <div class="warnbox">⚠ ຄວາມປອດໄພ: ອ່ານຄູ່ມືກ່ອນໃຊ້, ວາງເຄື່ອງເທິງພື້ນຮາບ, ຢ່າເກີນນ້ຳໜັກສູງສຸດ ${p.p>3000000&&p.w>40?'ແລະ ໃຊ້ສາຍຄ້ອງຄວາມປອດໄພເວລາແລ່ນ':''}</div>
@@ -541,7 +571,7 @@ function renderDrawer(){
  <div class="lbl">ການຮັບເຄື່ອງ</div><div class="chips"><button type="button" class="chip on">📦 ຮັບທີ່ສາຂາຂົນສົ່ງ</button></div>
  ${opt.ship!='pickup'?`<div class="f" style="margin-top:10px">${locHtml()}</div>`:''}
  </div>
- <div class="df"><div class="row"><span>ສິນຄ້າ</span><span>${K(c.sub)}</span></div><div class="row"><span>ຄ່າສົ່ງ (${c.w.toFixed(1)} ກກ)</span><span>${opt.ship=='pickup'?'ຟຣີ':K(c.sh)}</span></div>${opt.asm&&c.a?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມ</span><span>${K(c.tot)}</span></div><button class="btn block" style="margin-top:12px" onclick="go('checkout')">ໄປຊຳລະເງິນ</button></div>`
+ <div class="df"><div class="row"><span>ສິນຄ້າ</span><span>${K(c.sub)}</span></div><div class="row"><span>ຄ່າຂົນສົ່ງ</span><span style="color:var(--mute)">ຮ້ານຈະແຈ້ງໃຫ້ກ່ອນສົ່ງ</span></div>${opt.asm&&c.a?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມ</span><span>${K(c.tot)}</span></div><button class="btn block" style="margin-top:12px" onclick="go('checkout')">ໄປຊຳລະເງິນ</button></div>`
  :`<div class="db"><div class="empty"><big>🛒</big>ກະຕ່າຍັງວ່າງ<br><br><button class="btn" onclick="closeDrawer();go('home')">ເລືອກສິນຄ້າ</button></div></div>`)}
 /* ---------- checkout ---------- */
 let pay='cod',catF='all',qF='',sF='',pLoad=1,pErr=0,shown=0;
@@ -560,7 +590,7 @@ function checkView(){
  <div id="sum"></div>
  <button class="btn block" id="go" onclick="place(this)"></button></div>`}
 function setPay(k,el){pay=k;document.querySelectorAll('.pay').forEach(e=>e.classList.remove('on'));el.closest('.pay').classList.add('on');updWalOpt()}
-function updSum(){const it=items(),c=calc(it,opt),e=$('#sum');if(!e)return;e.innerHTML=`<div class="box"><h3>ສະຫຼຸບ</h3>${it.map(([id,q])=>`<div class="row"><span>${esc(pp(id).n)} × ${q}</span><span>${K(pp(id).p*q)}</span></div>`).join('')}<div class="row"><span>ຄ່າສົ່ງ (${c.w.toFixed(1)} ກກ)</span><span>${opt.ship=='pickup'?'ຟຣີ':K(c.sh)}</span></div>${opt.asm&&c.a?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມທັງໝົດ</span><span>${K(c.tot)}</span></div></div>`;const g=$('#go');if(g&&!busy)g.innerHTML=`ຢືນຢັນຄຳສັ່ງຊື້ · ${K(c.tot)}`;updWalOpt()}
+function updSum(){const it=items(),c=calc(it,opt),e=$('#sum');if(!e)return;e.innerHTML=`<div class="box"><h3>ສະຫຼຸບ</h3>${it.map(([id,q])=>`<div class="row"><span>${esc(pp(id).n)} × ${q}</span><span>${K(pp(id).p*q)}</span></div>`).join('')}<div class="row"><span>ຄ່າຂົນສົ່ງ</span><span style="color:var(--mute)">ຮ້ານຈະແຈ້ງໃຫ້ກ່ອນສົ່ງ</span></div>${opt.asm&&c.a?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມທັງໝົດ</span><span>${K(c.tot)}</span></div></div>`;const g=$('#go');if(g&&!busy)g.innerHTML=`ຢືນຢັນຄຳສັ່ງຊື້ · ${K(c.tot)}`;updWalOpt()}
 function updWalOpt(){const e=$('#wsub');if(!e)return;if(!me()){e.innerHTML='ເຂົ້າສູ່ລະບົບເພື່ອໃຊ້ກະເປົາເງິນ';return}const t=calc(items(),opt).tot,b=wallet.bal;e.innerHTML=b>=t?`ຍອດ <b>${K(b)}</b> · ຫຼັງຈ່າຍເຫຼືອ ${K(b-t)}`:`ຍອດ <b>${K(b)}</b> · <span style="color:var(--err)">ຂາດ ${K(t-b)}</span>`}
 const phOk=v=>/^(?:\+?856)?0?(20|30)\d{7,8}$/.test(v.replace(/[\s-]/g,''));
 function place(b){
@@ -569,11 +599,11 @@ function place(b){
  if($('#ad'))opt.ad=$('#ad').value;if($('#lm'))opt.lm=$('#lm').value;if($('#brn'))opt.branch=$('#brn').value;
  const it=items(),c=calc(it,opt);let bad=[];
  const chk=(f,ok)=>{const e=$('#'+f);if(e){e.classList.toggle('bad',!ok);if(!ok)bad.push(e)}};
- chk('f-name',$('#name').value.trim().length>1);chk('f-ph',phOk($('#ph').value));if(opt.ship!='pickup')chk('f-loc',!!opt.dist);if(opt.ship=='deliver')chk('f-ad',(opt.ad||'').trim().length>2);if(opt.ship=='branch')chk('f-car',!!opt.carrier);
+ chk('f-name',$('#name').value.trim().length>1);chk('f-ph',phOk($('#ph').value));if(opt.ship!='pickup')chk('f-loc',!!opt.dist);if(opt.ship=='deliver')chk('f-ad',(opt.ad||'').trim().length>2);if(opt.ship=='branch'){chk('f-car',!!opt.carrier);chk('f-brn',(opt.branch||'').trim().length>1)}
  const shk=()=>{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),450)};
  if(bad.length){(bad[0].querySelector('input,button')||bad[0]).focus();toast('err','ຂໍອະໄພ ຍັງສົ່ງຄຳສັ່ງບໍ່ໄດ້',`ກະລຸນາກວດ ${bad.length} ຊ່ອງທີ່ເປັນສີແດງ ແລ້ວກົດອີກຄັ້ງ`);return}
  const over=it.find(([id,q])=>q>stock[id]);if(over){toast('err','ຂໍອະໄພ ສິນຄ້າເຫຼືອບໍ່ພໍ',`${pp(over[0]).n} ເຫຼືອ ${stock[over[0]]} ອັນ — ກະລຸນາປັບຈຳນວນ`);return}
- if(pay=='wallet'&&wallet.bal<c.tot){shk();toast('err','ຂໍອະໄພ ຍອດກະເປົາເງິນບໍ່ພໍ',`ຂາດ ${K(c.tot-wallet.bal)} — ເຕີມເງິນກ່ອນ ຊ່ອງທີ່ພິມໄວ້ຍັງຢູ່`);walletSheet();return}
+ if(pay=='wallet'&&wallet.bal<c.tot){shk();toast('err','ຂໍອະໄພ ຍອດກະເປົາເງິນບໍ່ພໍ',`ຂາດ ${K(c.tot-wallet.bal)} — ເຕີມເງິນກ່ອນ ແລ້ວກັບມາກົດຢືນຢັນຄຳສັ່ງຊື້`);walletSheet();return}
  if(pay=='cod'&&c.tot>COD_MAX){shk();toast('err','ຂໍອະໄພ ຍອດນີ້ເກັບເງິນປາຍທາງບໍ່ໄດ້',`ຈຳກັດ ${K(COD_MAX)} — ກະລຸນາເລືອກ ຈ່າຍດ້ວຍກະເປົາເງິນ`);return}
   busy=true;b.disabled=true;b.innerHTML='<span class="spin"></span> ກຳລັງສົ່ງຄຳສັ່ງ...';
   const reset=()=>{busy=false;b.disabled=false;updSum()};
@@ -594,7 +624,7 @@ function admin(){
  const ps=cntSt('slip')+tops.filter(x=>x.st=='slip').length;
  const cur=ATABS.find(t=>t[0]==atab)||ATABS[0];
  const tab=t=>`<button class="chip ${cur[0]==t[0]?'on':''}" onclick="atab='${t[0]}';ofilter='all';render()">${t[1]} ${t[2]}${t[0]=='pay'&&ps?' ('+ps+')':''}</button>`;
- const body=({dash:dash,products:plist,orders:olist,customers:clist,pay:paylist,stock:slist,settings:setview})[cur[0]]();
+ const body=({dash:dash,products:plist,orders:olist,customers:clist,pay:paylist,stock:slist,settings:setview,codes:codeAdm})[cur[0]]();
  return `<div class="admin"><div class="ah"><div class="wrap hd"><div class="logo"><i>V</i>VANTA ຫຼັງບ້ານ</div><div class="sp"></div><span class="tag ok">ສິດ: ເຈົ້າຂອງຮ້ານ</span><button class="btn sm sec" style="margin-left:8px" onclick="admOut()">ອອກ</button></div></div><div class="wrap"><div class="tabs">${ATABS.map(tab).join('')}</div><h2 style="margin:4px 0 12px;font-size:20px">${cur[2]} <small style="color:var(--mute);font-weight:600">· ${cur[3]}</small></h2>${body}</div></div>`}
 const roNote=t=>`<div class="warnbox" style="margin-bottom:12px">${t}</div>`;
 function plist(){
@@ -631,7 +661,7 @@ function olist(){const fs=['all','pend','slip','pack','ship','done'];const l=ord
 function odetail(id){const o=orders.find(x=>x.id==id),c=calc(o.it,o.o),steps=['slip','pack','ship','done'],cur=steps.indexOf(o.st),n=NEXT[o.st];
  modal(`<div style="display:flex;align-items:center"><h2 style="margin:0;flex:1;font-size:21px">${esc(o.id)}</h2><span class="tag ${ST[o.st][1]}">${ST[o.st][0]}</span></div><div style="color:var(--mute);font-size:14px">${esc(o.cu)} · ${esc(o.ph)}<br>${shipTxt(o)} · ${esc(o.pay)}</div>
  ${o.st=='cancel'||o.st=='pend'?'':`<ul class="tl">${['ກວດການຊຳລະ','ຫຸ້ມຫໍ່','ກຳລັງສົ່ງ','ສົ່ງຮອດ'].map((l,i)=>`<li class="${i<cur||o.st=='done'?'d':i==cur?'c':''}"><i>${i<cur||o.st=='done'?'✓':''}</i>${l}</li>`).join('')}</ul>`}
- <div class="box" style="margin:10px 0 12px">${o.it.map(([i,q])=>`<div class="row"><span>${pp(i).e} ${esc(pp(i).n)} × ${q}</span><span>${K(pp(i).p*q)}</span></div>`).join('')}<div class="row"><span>ຄ່າສົ່ງ · ${c.w.toFixed(1)} ກກ</span><span>${K(c.sh)}</span></div>${c.as?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມ</span><span>${K(o.tot)}</span></div></div>
+ <div class="box" style="margin:10px 0 12px">${o.it.map(([i,q])=>`<div class="row"><span>${pp(i).e} ${esc(pp(i).n)} × ${q}</span><span>${K(pp(i).p*q)}</span></div>`).join('')}<div class="row"><span>ຄ່າສົ່ງ (ແຈ້ງລູກຄ້າເອງ) · ຈາກຄ່າສົ່ງຕໍ່ສິນຄ້າ</span><b>${K(o.it.reduce((a,[i,q])=>a+(+shipFees[i]||0)*q,0))}</b></div>${c.as?`<div class="row"><span>ບໍລິການປະກອບ</span><span>${K(c.as)}</span></div>`:''}<div class="row t"><span>ລວມ</span><span>${K(o.tot)}</span></div></div>
  ${ordTools(o)}${o.st=='pend'||o.st=='slip'?slipHtml(o.slip):''}
  ${o.pay=='ເກັບເງິນປາຍທາງ'?`<div class="warnbox">ເກັບເງິນປາຍທາງ: ຂົນສົ່ງເກັບ ${K(o.tot)}</div>`:''}${o.paid?`<div class="tag ok" style="margin-bottom:10px">ຈ່າຍດ້ວຍກະເປົາເງິນແລ້ວ ${K(o.paid)}</div>`:''}
  ${o.st=='slip'?`<label class="fl"><input type="checkbox" ${okSlip(o.slip)?'':'disabled'} onchange="$('#advb').disabled=!this.checked"> ຍອດໃນສະລິບ ${K(o.tot)} ຕົງ ແລະ ເງິນເຂົ້າບັນຊີແລ້ວ</label>`:''}
@@ -687,7 +717,7 @@ function shipBox(){
  let h=`<div class="lbl" style="margin-top:0">ການຮັບເຄື່ອງ</div><div class="chips"><button type="button" class="chip on">📦 ຮັບທີ່ສາຂາຂົນສົ່ງ</button></div>`;
  if(opt.ship=='pickup')return h+`<div class="tag info" style="margin-top:12px">ມາຮັບເອງທີ່ຮ້ານ — ຮ້ານຈະໂທນັດເວລາ</div>`;
  h+=`<div class="f" id="f-loc" style="margin-top:12px"><label>ແຂວງ / ເມືອງ ປາຍທາງ</label>${locHtml()}<div class="em">ກະລຸນາເລືອກເມືອງ</div></div>`;
- if(opt.ship=='branch')h+=`<div class="f" id="f-car"><label>ບໍລິສັດຂົນສົ່ງ</label><div class="chips">${CARRIERS.map((c,i)=>`<button type="button" class="chip ${opt.carrier==c?'on':''}" onclick="opt.carrier=CARRIERS[${i}];save();updShip()">${esc(c)}</button>`).join('')}</div><div class="em">ກະລຸນາເລືອກບໍລິສັດຂົນສົ່ງ</div></div><div class="f"><label>ສາຂາຮັບເຄື່ອງ (ບໍ່ບັງຄັບ)</label><input type="text" id="brn" value="${esc(opt.branch)}" oninput="opt.branch=this.value" placeholder="ເຊັ່ນ ສາຂາ${esc(opt.dist||'ໃນເມືອງ')}"></div><small style="color:var(--mute)">ຮ້ານສົ່ງເຄື່ອງໄປສາຂາ ແລ້ວທ່ານໄປຮັບເອງ — ຂົນສົ່ງຈະໂທແຈ້ງ</small>`;
+ if(opt.ship=='branch')h+=`<div class="f" id="f-car"><label>ບໍລິສັດຂົນສົ່ງ</label><div class="chips">${CARRIERS.map((c,i)=>`<button type="button" class="chip ${opt.carrier==c?'on':''}" onclick="opt.carrier=CARRIERS[${i}];save();updShip()">${esc(c)}</button>`).join('')}</div><div class="em">ກະລຸນາເລືອກບໍລິສັດຂົນສົ່ງ</div></div><div class="f" id="f-brn"><label>ສາຂາຮັບເຄື່ອງ <span style="color:var(--err)">*</span></label><input type="text" id="brn" value="${esc(opt.branch)}" oninput="opt.branch=this.value;if((this.value||'').trim().length>1)this.closest('.f').classList.remove('bad')" placeholder="ເຊັ່ນ ສາຂາ${esc(opt.dist||'ໃນເມືອງ')}"><div class="em">ກະລຸນາໃສ່ສາຂາທີ່ຈະໄປຮັບເຄື່ອງ</div></div><small style="color:var(--mute)">ຮ້ານສົ່ງເຄື່ອງໄປສາຂາ ແລ້ວທ່ານໄປຮັບເອງ — ຂົນສົ່ງຈະໂທແຈ້ງ</small>`;
  else h+=`<div class="f" id="f-ad"><label>ບ້ານ / ທີ່ຢູ່</label><input type="text" id="ad" autocomplete="street-address" value="${esc(opt.ad)}" oninput="opt.ad=this.value" placeholder="ເຊັ່ນ ບ້ານ ໂພນຕ້ອງ, ຖະໜົນ..."><div class="em">ກະລຸນາໃສ່ບ້ານ ແລະ ທີ່ຢູ່</div></div>`;
  return h}
 function shipTxt(o){const s=o.o||{},loc=(s.dist?'ເມືອງ'+s.dist+', ':'')+(s.prov||'');
@@ -877,7 +907,8 @@ const RPC_ERR={
  NOT_FOUND:[404,'ບໍ່ພົບຂໍ້ມູນ'],
  BAD_REQUEST:[400,'ຂໍ້ມູນບໍ່ຖືກຕ້ອງ ກະລຸນາກວດແລ້ວລອງໃໝ່'],
  TOO_MANY:[429,'ມີຄຳຂໍລໍຖ້າຫຼາຍເກີນໄປ ກະລຸນາລໍຮ້ານກວດກ່ອນ'],
- NO_PROFILE:[500,'ບໍ່ພົບໂປຣໄຟລ໌ບັນຊີ']
+ NO_PROFILE:[500,'ບໍ່ພົບໂປຣໄຟລ໌ບັນຊີ'],
+ NO_SLOT:[409,'ຍອດນີ້ມີຄົນເຕີມຢູ່ຫຼາຍເກີນໄປ — ລອງປ່ຽນຈຳນວນເງິນ ຫຼື ລໍຖ້າສອງສາມນາທີ']
 };
 function rpcErr(error){
  const m=String(error&&error.message||''),code=m.split(':')[0].trim(),r=RPC_ERR[code];
@@ -942,6 +973,8 @@ const API0=async(path,method='GET',body)=>{
     if(mm)return await rpc(sbA,mm[2]==='approve'?'admin_approve_topup':'admin_reject_topup',{p_id:mm[1]});
     if(path==='/admin/settings')return await rpc(sbA,'admin_save_settings',{p_data:body.data});
     if(path==='/admin/customers')return await rpc(sbA,'admin_list_customers');
+    mm=path.match(/^\/admin\/customers\/([0-9a-f-]{36})\/balance$/i);
+    if(mm)return await rpc(sbA,'admin_add_balance',{p_user:mm[1],p_amount:Math.round(Number(body.amount)||0),p_note:String(body.note||'').slice(0,120)});
     mm=path.match(/^\/admin\/products(?:\/(\d+))?$/);
     if(mm)return await rpc(sbA,'admin_save_product',{p_id:mm[1]?+mm[1]:null,p_data:body});
     mm=path.match(/^\/admin\/stock\/(\d+)\/set$/);
@@ -1003,7 +1036,8 @@ async function reqTop(b){const a=topAmt,f=$('#f-top'),okA=Number.isInteger(a)&&a
  catch(e){toast('err','ແຈ້ງເຕີມເງິນບໍ່ສຳເລັດ',e.message)}finally{b.disabled=false}}
 async function attach(id,d){try{const o=await API('/orders/'+id+'/slip','POST',{slip:d});const i=orders.findIndex(x=>x.id==id);if(i>=0)orders[i]=o;toast('ok','ແນບສະລິບແລ້ວ','ລໍຖ້າຮ້ານກວດ '+id);ordersSheet()}catch(e){toast('err','ແນບບໍ່ສຳເລັດ',e.message)}}
 /* --- ແອດມິນ (ທຸກຢ່າງຜ່ານ API ທີ່ server ກວດສິດ) --- */
-async function loadAdmin(){const d=await API('/admin/all');orders=d.orders;tops=d.topups;d.stock.forEach(x=>{stock[x.id]=x.stock})}
+let shipFees={}; /* ຄ່າສົ່ງຕໍ່ສິນຄ້າ (ສະເພາະແອດມິນ) */
+async function loadAdmin(){const d=await API('/admin/all');orders=d.orders;tops=d.topups;d.stock.forEach(x=>{stock[x.id]=x.stock});try{const f=await rpc(sbA,'admin_get_ship_fees');if(f&&typeof f=='object')shipFees=f}catch(e){}}
 async function doAdm(b){
  if(b.disabled)return;const un=$('#au').value.trim().toLowerCase(),pw=$('#adpw').value;
  document.querySelectorAll('#app .f').forEach(f=>f.classList.remove('bad'));
@@ -1060,14 +1094,10 @@ function sheetHead(t){return `<div style="display:flex;align-items:center"><h2 s
 function shipInfoSheet(){
  const o='ແຂວງອື່ນ';
  modal(`${sheetHead('🚚 ຂໍ້ມູນຈັດສົ່ງ')}
-<div class="box" style="margin-top:12px"><b>ຄ່າສົ່ງຄິດຕາມນ້ຳໜັກ</b>
- <div class="row"><span>ບໍ່ເກີນ 5 ກກ</span><b>${K(fee(5,CAP))}</b></div>
- <div class="row"><span>6 – 20 ກກ</span><b>${K(fee(20,CAP))}</b></div>
- <div class="row"><span>ເກີນ 20 ກກ</span><b>+${K(4000)} / ກກ</b></div>
- <small style="color:var(--mute)">ລາຄາຂ້າງເທິງແມ່ນໃນ ${esc(CAP)}. ${o}ຄູນ 1.6.</small></div>
+<div class="box" style="margin-top:12px"><b>ຄ່າຂົນສົ່ງ</b><br><small style="color:var(--mute)">ຮ້ານຈະແຈ້ງຄ່າຂົນສົ່ງໃຫ້ທ່ານກ່ອນສົ່ງເຄື່ອງ — ຍອດໃນເວັບແມ່ນລາຄາສິນຄ້າ.</small></div>
 <div class="box" style="margin-top:10px">
  
- <small style="color:var(--mute)">ນ້ຳໜັກທີ່ໃຊ້ຄິດ = ຄ່າທີ່ຫຼາຍກວ່າລະຫວ່າງນ້ຳໜັກຈິງ ແລະນ້ຳໜັກຕາມຂະໜາດ. ຍອດຈິງເບິ່ງໄດ້ໃນກະຕ່າກ່ອນຈ່າຍ.</small></div>
+ <small style="color:var(--mute)">ຮ້ານສົ່ງເຄື່ອງຕາມຂະໜາດ ແລະ ນ້ຳໜັກຂອງສິນຄ້າ.</small></div>
 <div class="box" style="margin-top:10px"><b>ສະຖານະຄຳສັ່ງ</b><div style="margin-top:6px;line-height:1.9">${Object.values(ST).map(s=>`<span class="tag ${s[1]}">${s[0]}</span>`).join(' ')}</div></div>
 <button class="btn block" style="margin-top:12px" onclick="ordersSheet()">📦 ເບິ່ງຄຳສັ່ງຂອງຂ້ອຍ</button>`,true)}
 function contactSheet(){
@@ -1116,12 +1146,26 @@ function cleanBody(v,k){
  if(Array.isArray(v))return v.map(x=>cleanBody(x,k));
  if(typeof v=='object'){const o={};for(const a in v)o[a]=cleanBody(v[a],a);return o}
  return v}
+/* ===== ລ໋ອກ 10 ນາທີ ເມື່ອລອງຜິດ/ສະໝັກບໍ່ສຳເລັດເກີນ 5 ຄັ້ງ (ເກັບໃນເຄື່ອງ ຣີເຟຣຊແລ້ວຍັງຕິດ) ===== */
+function lkLoad(){try{return JSON.parse(localStorage.getItem('vlk')||'{}')||{}}catch(e){return {}}}
+function lkSave(o){try{localStorage.setItem('vlk',JSON.stringify(o))}catch(e){}}
+function lockErr(u){const s=Math.max(1,Math.ceil((u-Date.now())/1000)),m=Math.floor(s/60);const e=apiErr(429,'LOCKED','ລອງຜິດຫຼາຍເກີນໄປ — ຖືກລ໋ອກ ລໍຖ້າ '+(m?m+' ນາທີ ':'')+(s%60)+' ວິນາທີ ແລ້ວລອງໃໝ່');e.until=u;return e}
+function lockKeys(path,body){
+ let kind;if(path==='/auth/login'||path==='/auth/register')kind='u';else if(path==='/admin/login')kind='a';else return null;
+ const b=body||{},id=kind=='a'?String(b.username||''):String(b.email||b.phone||'');
+ return [kind+':'+(id.trim().toLowerCase()||'?').slice(0,120),'dev:'+kind]}
+function lockUntil(kind){const l=lkLoad()['dev:'+kind];return l&&l.u>Date.now()?l.u:0}
+function lockCheck(ks){const o=lkLoad(),now=Date.now();let m=0;ks.forEach(k=>{const l=o[k];if(l&&l.u>now&&l.u>m)m=l.u});if(m)throw lockErr(m)}
+function lockFail(ks){const o=lkLoad(),now=Date.now();let m=0;
+ ks.forEach(k=>{const l=o[k]||(o[k]={n:0,u:0,t:0});if(l.u&&l.u<=now){l.u=0;l.n=0}if(l.t&&now-l.t>600000)l.n=0;if(!l.n)l.t=now;if(++l.n>=5){l.u=now+600000;l.n=0;l.t=0;if(l.u>m)m=l.u}});
+ Object.keys(o).forEach(k=>{if(!o[k].u&&!o[k].n)delete o[k]});lkSave(o);return m?lockErr(m):null}
+function lockOk(ks){const o=lkLoad();ks.forEach(k=>delete o[k]);lkSave(o)}
 const thr={};
 const API=async(path,method,body)=>{
- const lg=/\/(auth|admin)\/login$/.test(path);
+ const lg=false,lkk=lockKeys(path,body);if(lkk)lockCheck(lkk);
  if(lg){const t=thr[path];if(t&&Date.now()<t.u)throw apiErr(429,'TOO_MANY','ລອງຜິດຫຼາຍເກີນໄປ ລໍຖ້າ '+Math.ceil((t.u-Date.now())/1000)+' ວິນາທີ')}
- try{const r=await API0(path,method,cleanBody(body));if(lg)delete thr[path];return r}
- catch(e){if(lg&&e&&e.status!==0){const t=thr[path]||(thr[path]={n:0,u:0});if(++t.n>=5){t.u=Date.now()+60000;t.n=0}}throw e}};
+ try{const r=await API0(path,method,cleanBody(body));if(lkk)lockOk(lkk);return r}
+ catch(e){if(lkk&&e&&e.status!==0){const le=lockFail(lkk);if(le)throw le}throw e}};
 
 /* ---------- bottom tab bar ---------- */
 function drawTab(){
@@ -1131,7 +1175,7 @@ function drawTab(){
  const ic=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
  t.innerHTML=`<button class="${on('home')}" onclick="navTo('home')">${ic('<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>')}ໜ້າຫຼັກ</button>`+
  `<button class="${on('list')}" onclick="navTo('list')">${ic('<path d="M6 8h12l1 12H5zM9 8a3 3 0 0 1 6 0"/>')}ສິນຄ້າ</button>`+
- `<button onclick="walletSheet()">${ic('<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>')}ເຕີມເງິນ</button>`+
+ `<button class="${/^top/.test(view)?'on':''}" onclick="go('topup')">${ic('<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>')}ເຕີມເງິນ</button>`+
  `<button onclick="ordersSheet()">${ic('<path d="M7 3h10l3 4v14H4V7z"/><path d="M8 12h8M8 16h5"/>')}ຄຳສັ່ງ</button>`}
 function buy(id,b){if(!stock[id]){toast('err','ຂໍອະໄພ','ສິນຄ້ານີ້ໝົດຊົ່ວຄາວ');return}cart={};cart[id]=1;opt.ship='branch';opt.dist='';save();render();openDrawer()}
 {const _r=render;render=function(){opt.ship='branch';opt.asm=false;_r.apply(this,arguments);drawTab();if(mode=='shop'&&view=='home'&&$('#rec'))finder()}}
@@ -1200,7 +1244,7 @@ async function gSubmit(){
   else d=await API(reg?'/auth/register':'/auth/login','POST',reg?{name:nm,email:em,password:pw}:{email:em,password:pw});
   if(!d.user)throw apiErr(500,'PROFILE','ບໍ່ພົບໂປຣໄຟລ໌ບັນຊີ ກະລຸນາຕິດຕໍ່ຮ້ານ');
   applyMe(d);await gDone(true)
- }catch(e){gMsg(mapAuthErr(e).message,1)}
+ }catch(e){gMsg(mapAuthErr(e).message,1);if(e&&e.code=='LOCKED')gLock(e.until)}
  finally{gBusy=0;btn.disabled=false;btn.innerHTML=old}}
 async function gGoogle(){
  if(location.protocol!='https:'&&location.hostname!='localhost'){gMsg('Google ໃຊ້ໄດ້ສະເພາະເວັບທີ່ເປີດຜ່ານ https (ຕ້ອງອັບຂຶ້ນ Hosting ກ່ອນ)',1);return}
@@ -1260,7 +1304,8 @@ function prodForm(id){
  <div style="display:flex;gap:8px">${f('l','ຍາວ ຊມ',p.d[0],'number','min="1"')}${f('b','ກວ້າງ ຊມ',p.d[1],'number','min="1"')}${f('h','ສູງ ຊມ',p.d[2],'number','min="1"')}</div>
  ${sel('sp','ພື້ນທີ່ທີ່ຕ້ອງການ',[[1,'ແຄບ'],[2,'ປານກາງ'],[3,'ກວ້າງ']],p.sp)}${f('wr','ການຮັບປະກັນ',p.wr,'text','maxlength="200"')}
  <div class="f"><label>ສະເປັກ (ແຕ່ລະແຖວ: ຫົວຂໍ້: ຄ່າ)</label><textarea id="pf-spec" rows="4" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:12px;font:inherit">${esc(p.spec.map(r=>r[0]+': '+r[1]).join('\n'))}</textarea></div>
- <label class="fl"><input type="checkbox" id="pf-asm" ${p.asm?'checked':''}> ມີບໍລິການປະກອບ</label><label class="fl"><input type="checkbox" id="pf-on" ${p.on!==false?'checked':''}> ສະແດງໃນຮ້ານ (ເອົາຕິກອອກ = ເຊື່ອງ)</label>
+ <div class="f"><label>ຄ່າສົ່ງຂອງສິນຄ້ານີ້ (₭ ຕໍ່ 1 ອັນ) — ສະເພາະແອດມິນ ລູກຄ້າບໍ່ເຫັນ</label><input id="pf-sf" type="tel" inputmode="numeric" value="${esc(String(shipFees[id]||''))}" placeholder="ເຊັ່ນ 150000"></div>
+<label class="fl"><input type="checkbox" id="pf-asm" ${p.asm?'checked':''}> ມີບໍລິການປະກອບ</label><label class="fl"><input type="checkbox" id="pf-on" ${p.on!==false?'checked':''}> ສະແດງໃນຮ້ານ (ເອົາຕິກອອກ = ເຊື່ອງ)</label>
  <button class="btn block" style="margin-top:12px" onclick="pfSave(this,${id||0})">ບັນທຶກ</button><button class="btn sec block" style="margin-top:10px" onclick="closeModal()">ປິດ</button>`,true);pfShow()}
 async function pfSave(b,id){
  const v=k=>($('#pf-'+k).value||'').trim(),n=v('n'),price=parseInt(v('p'),10),st=parseInt(v('s'),10),w=parseFloat(v('w')),d=['l','b','h'].map(k=>parseFloat(v(k)));
@@ -1270,8 +1315,11 @@ async function pfSave(b,id){
  if(!(w>0&&w<=1000)||d.some(x=>!(x>0&&x<=1000)))return toast('err','ນ້ຳໜັກ/ຂະໜາດບໍ່ຖືກ','ໃສ່ຕົວເລກຫຼາຍກວ່າ 0 (ໃຊ້ຄິດຄ່າສົ່ງ)');
  const specs=v('spec').split('\n').map(l=>{const i=l.indexOf(':');return i>0?[l.slice(0,i).trim(),l.slice(i+1).trim()]:null}).filter(r=>r&&r[0]&&r[1]).slice(0,20);
  b.disabled=true;
- try{await API('/admin/products'+(id?'/'+id:''),'POST',{name:n,emoji:v('e')||'📦',cat:v('g'),price,stock:st,weight:w,dim_l:d[0],dim_w:d[1],dim_h:d[2],space:+v('sp'),assembly:$('#pf-asm').checked,active:$('#pf-on').checked,warranty:v('wr'),specs,image:okPimg(pfImg)?pfImg:''});
-  closeModal();await syncStock();await loadAdmin();render();toast('ok','ບັນທຶກສິນຄ້າແລ້ວ',n)}
+ try{const r0=await API('/admin/products'+(id?'/'+id:''),'POST',{name:n,emoji:v('e')||'📦',cat:v('g'),price,stock:st,weight:w,dim_l:d[0],dim_w:d[1],dim_h:d[2],space:+v('sp'),assembly:$('#pf-asm').checked,active:$('#pf-on').checked,warranty:v('wr'),specs,image:okPimg(pfImg)?pfImg:''});
+  await syncStock();
+  {const sfv=($('#pf-sf')?$('#pf-sf').value:'').replace(/\D/g,'');let pid=id||(r0&&(r0.id||r0.product_id||(r0.product&&r0.product.id)))||(P.filter(x=>x.n===n).sort((a,b)=>b.id-a.id)[0]||{}).id;
+   if(pid&&(sfv!==''||shipFees[pid]!==undefined)){try{await rpc(sbA,'admin_set_ship_fee',{p_id:+pid,p_fee:parseInt(sfv||'0',10)})}catch(e){toast('warn','ບັນທຶກຄ່າສົ່ງບໍ່ໄດ້','ຍັງບໍ່ໄດ້ຣັນ SQL ຄ່າສົ່ງ (ໄຟລ໌ ship-fees.sql)')}}}
+  closeModal();await loadAdmin();render();toast('ok','ບັນທຶກສິນຄ້າແລ້ວ',n)}
  catch(e){toast('err','ບັນທຶກບໍ່ສຳເລັດ',e.code=='NOT_READY'||/function|schema|column/i.test(e.message||'')?'ຍັງບໍ່ໄດ້ຣັນ SQL ໃນ Supabase (ໄຟລ໌ vanta_admin_products.sql)':e.message);if(e.status==401){ses.a=null;render()}}
  finally{b.disabled=false}}
 /* ===== ທາງລັດແອດມິນ + ຕັ້ງຄ່າຮ້ານ + ລູກຄ້າ ===== */
@@ -1280,9 +1328,17 @@ const bt=(i,t,a)=>`<button class="btn sm sec" onclick="${a}">${i} ${t}</button>`
 function cp(t){const f=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();let ok=0;try{ok=document.execCommand('copy')}catch(e){}a.remove();toast(ok?'ok':'err',ok?'ກ໊ອບແລ້ວ':'ກ໊ອບບໍ່ໄດ້','')};navigator.clipboard?navigator.clipboard.writeText(t).then(()=>toast('ok','ກ໊ອບແລ້ວ',''),f):f()}
 function zoomSlip(src){const d=document.createElement('div');d.id='zs';d.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(255,255,255,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:10px';d.innerHTML=`<img src="${esc(src)}" alt="" style="max-width:100%;max-height:82%;object-fit:contain"><div style="display:flex;gap:8px"><a class="btn sm" download="slip.jpg" href="${esc(src)}">⬇ ບັນທຶກຮູບ</a><button class="btn sm sec" onclick="document.getElementById('zs').remove()">ປິດ</button></div>`;d.onclick=e=>{if(e.target===d)d.remove()};document.body.appendChild(d)}
 function ordTools(o){const b=`ສະບາຍດີ ${o.cu||''} ຮ້ານ VANTA ແຈ້ງຄຳສັ່ງ ${o.id}: `,M={pend:'ຍັງບໍ່ໄດ້ຮັບສະລິບ ກະລຸນາແນບສະລິບໃນ “ຄຳສັ່ງຂອງຂ້ອຍ”',slip:'ໄດ້ຮັບສະລິບແລ້ວ ກຳລັງກວດສອບ',pack:'ຢືນຢັນຮັບເງິນແລ້ວ ກຳລັງຫຸ້ມຫໍ່',ship:'ຝາກເຄື່ອງຂົນສົ່ງແລ້ວ',done:'ສົ່ງຮອດແລ້ວ ຂອບໃຈທີ່ອຸດໜູນ',cancel:'ຄຳສັ່ງຖືກຍົກເລີກແລ້ວ'};
- return `<div class="box" style="margin:10px 0"><h3>⚡ ທາງລັດ</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${o.ph?lk('📞','ໂທ','tel:'+o.ph)+lk('💬','WhatsApp',waUrl(o.ph,b+(M[o.st]||'')),WA)+bt('🚚','ແຈ້ງຄ່າຝາກ',`feeMsg('${o.id}')`):''}${bt('📋','ກ໊ອບທີ່ຢູ່ສົ່ງ',`cpOrder('${o.id}')`)}</div></div>`}
+ return `<div class="box" style="margin:10px 0"><h3>⚡ ທາງລັດ</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${o.ph?lk('📞','ໂທ','tel:'+o.ph)+lk('💬','WhatsApp',waUrl(o.ph,b+(M[o.st]||'')),WA)+bt('🚚','ແຈ້ງຄ່າຝາກ',`feeMsg('${o.id}')`)+bt('🧾','ສົ່ງບິນ WhatsApp',`sendBill('${o.id}')`):''}${bt('📋','ກ໊ອບທີ່ຢູ່ສົ່ງ',`cpOrder('${o.id}')`)}</div></div>`}
+/* ===== ໃບບິນ: ແອດມິນກົດສົ່ງທາງ WhatsApp (ຂໍ້ຄວາມລ້ວນ) ===== */
+function billText(o){
+ const s=o.o||{},loc=(s.dist?'ເມືອງ'+s.dist+', ':'')+(s.prov||''),c=calc(o.it,o.o);
+ const ship=s.ship=='pickup'?'ມາຮັບເອງທີ່ຮ້ານ':s.ship=='branch'?'ຮັບທີ່ສາຂາ '+(s.carrier||'')+(s.branch?' · '+s.branch:'')+(loc?' · '+loc:''):'ສົ່ງຮອດບ້ານ'+(loc?' · '+loc:'')+(s.ad?' · '+s.ad:'')+(s.lm?' ('+s.lm+')':'');
+ const lines=o.it.map(([i,q])=>{const p=pp(i);return p?'• '+p.n+' × '+q+' = '+K(p.p*q):''}).filter(Boolean);
+ const L=['🧾 *ໃບບິນ VANTA*','ຄຳສັ່ງ: *'+o.id+'*',o.t?'ວັນທີ: '+o.t:null,'ລູກຄ້າ: '+(o.cu||'')+(o.ph?' · '+o.ph:''),'','*ລາຍການ*',...lines,c.as?'• ບໍລິການປະກອບ = '+K(c.as):null,'','*ລວມ: '+K(o.tot)+'*','ຊຳລະ: '+(o.paid?'ຈ່າຍດ້ວຍກະເປົາເງິນແລ້ວ '+K(o.paid):(o.pay||'')),'ຈັດສົ່ງ: '+ship,'ຄ່າຂົນສົ່ງ: ຮ້ານຈະແຈ້ງແຍກ','','ຂອບໃຈທີ່ອຸດໜູນ VANTA 🙏',SHOP.phone?'ຕິດຕໍ່ຮ້ານ: '+SHOP.phone:null];
+ return L.filter(x=>x!==null).filter((x,i,A)=>x!==''||(i>0&&A[i-1]!=='')).join('\n')}
+function sendBill(id){const o=orders.find(x=>x.id==id);if(!o)return;if(!o.ph){toast('err','ບໍ່ມີເບີລູກຄ້າ','ສົ່ງບິນທາງ WhatsApp ບໍ່ໄດ້');return}window.open(waUrl(o.ph,billText(o)),'_blank','noopener')}
 function cpOrder(id){const o=orders.find(x=>x.id==id);cp(`${o.id}\n${o.cu||''} ${o.ph||''}\n${String(shipTxt(o)).replace(/<[^>]*>/g,'')}\n${o.it.map(([i,q])=>pp(i)?pp(i).n+' x'+q:'').join(', ')}\nລວມ ${K(o.tot)}`)}
-function feeMsg(id){modal(`<h2 style="margin:0 0 6px;font-size:20px">ແຈ້ງຄ່າຝາກ ${esc(id)}</h2><div class="f"><label>ຄ່າຝາກຕາມບິນຂົນສົ່ງ (₭)</label><input type="number" id="feeV" inputmode="numeric" min="0"></div><button class="btn block" onclick="sendFee('${id}')">💬 ສົ່ງທາງ WhatsApp</button><button class="btn sec block" style="margin-top:10px" onclick="odetail('${id}')">ກັບຄືນ</button>`,true)}
+function feeMsg(id){modal(`<h2 style="margin:0 0 6px;font-size:20px">ແຈ້ງຄ່າຝາກ ${esc(id)}</h2><div class="f"><label>ຄ່າຝາກຕາມບິນຂົນສົ່ງ (₭)</label><input type="number" id="feeV" inputmode="numeric" min="0" value="${(()=>{const o=orders.find(x=>x.id==id);const t=o?o.it.reduce((a,[i,q])=>a+(+shipFees[i]||0)*q,0):0;return t||''})()}"></div><button class="btn block" onclick="sendFee('${id}')">💬 ສົ່ງທາງ WhatsApp</button><button class="btn sec block" style="margin-top:10px" onclick="odetail('${id}')">ກັບຄືນ</button>`,true)}
 function sendFee(id){const o=orders.find(x=>x.id==id),v=parseInt($('#feeV').value,10);if(!(v>=0)){toast('err','ໃສ່ຄ່າຝາກ','');return}window.open(waUrl(o.ph,`ສະບາຍດີ ${o.cu||''} ຄຳສັ່ງ ${o.id} ຄ່າຝາກຂົນສົ່ງຕາມບິນ ${K(v)} ກະລຸນາຈ່າຍແຍກຕາມທີ່ຮ້ານແຈ້ງ`),'_blank','noopener')}
 function quick(){return `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">${bt('➕','ສິນຄ້າໃໝ່',"atab='products';render();prodForm()")}${bt('💳','ສະລິບລໍກວດ',"atab='pay';render()")}${bt('📦','ຕ້ອງຫຸ້ມຫໍ່',"atab='orders';ofilter='pack';render()")}${bt('🏷','ສະຕັອກໃກ້ໝົດ',"atab='stock';render()")}${lk('🛒','ເບິ່ງໜ້າຮ້ານ',location.href.split('#')[0].replace(/admin\/?$/,''),WA)}</div>`}
 function dash2(){const m={};orders.filter(o=>['pack','ship','done'].includes(o.st)).forEach(o=>o.it.forEach(([i,q])=>m[i]=(m[i]||0)+q));const t=Object.entries(m).sort((a,b)=>b[1]-a[1]).filter(r=>pp(r[0])).slice(0,5),lw=low();
@@ -1293,8 +1349,28 @@ let custs=null,custAt=0,custErr=0;
 function clist(){
  if(!custs||Date.now()-custAt>30000){custAt=Date.now();API('/admin/customers').then(d=>{custs=d||[];custErr=0;render()}).catch(e=>{custs=custs||[];custErr=1;render()})}
  const l=(custs||[]).map(c=>{const mine=orders.filter(o=>normPh(o.ph)&&normPh(o.ph)==normPh(c.phone)),sp=mine.filter(o=>['pack','ship','done'].includes(o.st)).reduce((a,o)=>a+o.tot,0);
-  return `<div class="oc" style="cursor:default;flex-wrap:wrap"><div style="flex:1;min-width:150px"><b>${esc(c.name||'—')}</b><br><small style="color:var(--mute)">${esc(c.phone||'ບໍ່ມີເບີ')} · ${mine.length} ຄຳສັ່ງ · ຊື້ແລ້ວ ${K(sp)}</small></div><div style="text-align:right"><small style="color:var(--mute)">ກະເປົາເງິນ</small><br><b>${K(Number(c.balance)||0)}</b></div>${c.phone?`<div style="display:flex;gap:8px;width:100%">${lk('📞','ໂທ','tel:'+c.phone)}${lk('💬','WhatsApp',waUrl(c.phone,''),WA)}</div>`:''}</div>`}).join('');
+  return `<div class="oc" style="cursor:default;flex-wrap:wrap"><div style="flex:1;min-width:150px"><b>${esc(c.name||'—')}</b><br><small style="color:var(--mute)">${esc(c.phone||'ບໍ່ມີເບີ')} · ${mine.length} ຄຳສັ່ງ · ຊື້ແລ້ວ ${K(sp)}</small></div><div style="text-align:right"><small style="color:var(--mute)">ກະເປົາເງິນ</small><br><b>${K(Number(c.balance)||0)}</b></div><div style="display:flex;gap:8px;width:100%;flex-wrap:wrap">${c.id?bt('💰','ເພີ່ມເງິນ',`addBal('${esc(c.id)}')`):''}${c.phone?lk('📞','ໂທ','tel:'+c.phone)+lk('💬','WhatsApp',waUrl(c.phone,''),WA):''}</div></div>`}).join('');
  return (custErr?roNote('ດຶງລູກຄ້າບໍ່ໄດ້ — ຍັງບໍ່ໄດ້ຣັນ SQL ສ່ວນທີ 2 ໃນໄຟລ໌ vanta_admin_products.sql'):'')+(l||'<div class="empty"><big>👥</big>ຍັງບໍ່ມີລູກຄ້າ</div>')}
+/* ===== ແອດມິນເພີ່ມເງິນເຂົ້າກະເປົາລູກຄ້າ (ຜ່ານ RPC admin_add_balance ໃນ Supabase) ===== */
+function addBal(id){
+ const c=(custs||[]).find(x=>x.id==id);if(!c||!/^[0-9a-f-]{36}$/i.test(id))return;
+ modal(`<div style="display:flex;align-items:center"><h2 style="margin:0;flex:1;font-size:20px">💰 ເພີ່ມເງິນເຂົ້າກະເປົາ</h2><button class="ib" style="color:var(--ink)" onclick="closeModal()" aria-label="ປິດ">✕</button></div>
+ <div class="box" style="margin:12px 0"><b>${esc(c.name||'—')}</b><br><small style="color:var(--mute)">${esc(c.phone||'ບໍ່ມີເບີ')}</small><div class="row" style="margin-top:6px"><span>ຍອດປັດຈຸບັນ</span><b>${K(Number(c.balance)||0)}</b></div></div>
+ <div class="f"><label>ຈຳນວນເງິນທີ່ຈະເພີ່ມ (₭)</label><input type="number" id="abAmt" inputmode="numeric" min="1000" max="50000000" step="1000" placeholder="ເຊັ່ນ 100000"></div>
+ <div class="f"><label>ໝາຍເຫດ (ບໍ່ບັງຄັບ)</label><input type="text" id="abNote" maxlength="120" placeholder="ເຊັ່ນ ຮັບເງິນສົດ / ຊົດເຊີຍ"></div>
+ <button class="btn block" onclick="doAddBal(this,'${id}')">ເພີ່ມເງິນ</button><button class="btn sec block" style="margin-top:10px" onclick="closeModal()">ຍົກເລີກ</button>`,true)}
+async function doAddBal(b,id){
+ const c=(custs||[]).find(x=>x.id==id),amt=parseInt(($('#abAmt')||{}).value,10),note=(($('#abNote')||{}).value||'').trim();
+ if(!c||b.disabled)return;
+ if(!(amt>=1000&&amt<=50000000))return toast('err','ຈຳນວນບໍ່ຖືກ','ໃສ່ 1,000 – 50,000,000 ₭');
+ if(!confirm('ເພີ່ມເງິນ '+K(amt)+' ໃຫ້ '+(c.name||'ລູກຄ້າ')+' ?\nຍອດໃໝ່ຈະເປັນ '+K((Number(c.balance)||0)+amt)))return;
+ b.disabled=true;
+ try{await API('/admin/customers/'+id+'/balance','POST',{amount:amt,note});
+  closeModal();
+  try{custs=(await API('/admin/customers'))||[];custAt=Date.now();custErr=0}catch(_){custs=null;custAt=0}
+  toast('ok','ເພີ່ມເງິນແລ້ວ',(c.name||'')+' +'+K(amt));render()}
+ catch(e){toast('err','ເພີ່ມເງິນບໍ່ສຳເລັດ',e.raw||e.message);if(e.status==401){ses.a=null;render()}}
+ finally{b.disabled=false}}
 const SKEYS=['phone','chat','addr','hrs','bank','promo','h1a','h1b','hp'];let setQr='';
 async function loadSettings(){try{const{data}=await sbU.from('shop_settings').select('data').eq('id',1).maybeSingle(),d=data&&data.data;if(!d)return;SKEYS.forEach(k=>{if(typeof d[k]=='string'&&d[k])SHOP[k]=d[k]});if(okPimg(d.qr))SHOP.qr=d.qr;else if(d.qr==='')SHOP.qr='';if(Array.isArray(d.carriers)&&d.carriers.length)CARRIERS.splice(0,CARRIERS.length,...d.carriers.slice(0,10).map(String))}catch(e){}}
 function imgData(inp,max,cb){const f=inp.files[0];if(!f)return;if(!/^image\//.test(f.type)||f.size>15e6){toast('err','ແນບບໍ່ໄດ້','ໃຊ້ຮູບ JPG/PNG ບໍ່ເກີນ 15 MB');return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);let q=.85,d;do{d=c.toDataURL('image/jpeg',q);q-=.1}while(d.length>300000&&q>.3);cb(d)};im.src=r.result};r.readAsDataURL(f);inp.value=''}
@@ -1318,6 +1394,146 @@ const EMO=new RegExp('('+Object.keys(IC).join('|')+')\uFE0F?','g'),EMT=new RegEx
 function emo(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|OPTION|TITLE|INPUT)$/.test(n.parentNode.nodeName)||!EMT.test(n.nodeValue)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}),L=[];while(w.nextNode())L.push(w.currentNode);
  L.forEach(n=>{const sp=document.createElement('span');sp.innerHTML=esc(n.nodeValue).replace(EMO,(m,k)=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`);n.replaceWith(...sp.childNodes)})}
 let emoQ=0;new MutationObserver(()=>{if(emoQ)return;emoQ=requestAnimationFrame(()=>{emoQ=0;emo(document.body)})}).observe(document.body,{childList:true,subtree:true,characterData:true});emo(document.body);
+
+/* ===== ນັບຖອຍຫຼັງໜ້າລ໋ອກອິນ ===== */
+let gLockT=null;
+function gLock(u){clearInterval(gLockT);const f=()=>{const b=$('#gsub'),r=Math.ceil((u-Date.now())/1000);
+ if(r<=0){clearInterval(gLockT);if(b)b.disabled=false;gMsg('');return}
+ if(b)b.disabled=true;gMsg('ລອງຜິດຫຼາຍເກີນໄປ — ຖືກລ໋ອກ ລໍຖ້າ '+Math.floor(r/60)+':'+String(r%60).padStart(2,'0')+' ນາທີ',1)};
+ setTimeout(f,0);gLockT=setInterval(f,1000)}
+{const _gf=gForm;gForm=function(t){_gf.apply(this,arguments);if(t!='newpw'){const u=lockUntil('u');if(u)gLock(u)}}}
+
+/* ===== ໜ້າເຕີມເງິນ: ເລືອກຊ່ອງທາງ → ສະແກນ QR (15 ນາທີ) / ໂຄ້ດເງິນ ===== */
+const QR_MIN=15,QMIN=1000,QMAX=19999800,qrKey=()=>'vqr:'+(ses.u||'x');
+let tpIn='';
+function qrGet(){try{const v=JSON.parse(localStorage.getItem(qrKey())||'null');if(v&&Number.isInteger(v.a)&&Number.isInteger(v.b)&&v.e>Date.now())return v;if(v)localStorage.removeItem(qrKey())}catch(e){}return null}
+function qrPut(v){try{localStorage.setItem(qrKey(),JSON.stringify(v))}catch(e){}}
+function qrDrop(){try{localStorage.removeItem(qrKey())}catch(e){}}
+const qrFmt=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const tpBack=()=>`<div class="crumb"><button onclick="go('topup')">← ຍ້ອນກັບ</button></div>`;
+const tpHist=()=>`<div class="tpbox"><div id="walpend"></div><div class="lbl" style="margin-top:0">ປະຫວັດ</div><div id="walhist"></div></div>`;
+function tpMark(){document.querySelectorAll('.tpchips button').forEach(b=>b.classList.toggle('on',b.dataset.n===tpIn))}
+function tpType(i){tpIn=i.value.replace(/\D/g,'').slice(0,9);if(i.value!==tpIn)i.value=tpIn;tpMark()}
+function pickAmt(n){tpIn=String(n);const i=$('#topin');if(i)i.value=tpIn;tpMark()}
+
+/* --- ໜ້າທີ 1: ເລືອກຊ່ອງທາງເຕີມເງິນ --- */
+function topLand(){
+ const q=qrGet(),card=(ic,t,sb,to)=>`<button class="tpc" onclick="go('${to}')"><span class="tpi">${ic}</span><span class="tpt"><b>${t}</b><small>${sb}</small></span><span class="tpa">›</span></button>`;
+ return `<div class="wrap" style="padding:14px 16px 30px"><div class="tpbox"><h1>💰 ເຕີມເງິນ</h1><p style="margin:0">ເລືອກຊ່ອງທາງເຕີມເງິນທີ່ທ່ານຕ້ອງການ</p><div class="balbig"><small>ຍອດຄົງເຫຼືອ</small><b data-bal data-v="${wallet.bal}">${K(wallet.bal)}</b></div></div>
+${card('🔳','ສະແກນ QR ໂອນເງິນ',q?'ມີ QR ທີ່ຍັງໃຊ້ໄດ້ — ກົດເພື່ອສືບຕໍ່':'ເຕີມເງິນດ້ວຍ QR · ຮ້ານກວດສະລິບ ແລ້ວເຕີມໃຫ້','topqr')}
+${card('🎉','ໂຄ້ດເງິນ','ປ້ອນໂຄ້ດເລີຍ · ເງິນເຂົ້າກະເປົາທັນທີ','topcode')}
+${tpHist()}</div>`}
+
+/* --- ໜ້າທີ 2: ສະແກນ QR --- */
+function topQrView(){
+ const q=qrGet();
+ if(!q){
+  const ch=[10000,20000,50000,100000,200000,500000].map(n=>`<button type="button" data-n="${n}" class="${tpIn==String(n)?'on':''}" onclick="pickAmt(${n})">${n.toLocaleString('en-US')}</button>`).join('');
+  return `<div class="wrap" style="padding:0 16px 30px">${tpBack()}<div class="tpbox"><h1>🔳 ເຕີມເງິນ (QR)</h1><p>ສະແກນ QR ເພື່ອໂອນ ແລ້ວແນບສະລິບ ຮ້ານຈະກວດ ແລະເຕີມເຂົ້າກະເປົາໃຫ້</p>
+<div class="f" id="f-top"><label>ຈຳນວນເງິນ <span style="color:var(--err)">*</span></label><div class="tprow"><input id="topin" type="tel" inputmode="numeric" placeholder="ກະລຸນາກອກຈຳນວນເງິນ" value="${esc(tpIn)}" oninput="tpType(this)" onkeydown="if(event.key=='Enter')qrMake(this)"><button class="btn" onclick="qrMake(this)">ເລີ່ມ</button></div><div class="em">ເຕີມໄດ້ 1,000 – 19,999,800 ₭</div></div>
+<div class="tpchips">${ch}</div>
+${!SHOP.bank&&!qrOk(SHOP.qr)?'<div class="warnbox">ຮ້ານຍັງບໍ່ໄດ້ຕັ້ງບັນຊີຮັບໂອນ — ກະລຸນາຕິດຕໍ່ຮ້ານກ່ອນເຕີມເງິນ</div>':''}
+<div class="tptips"><b>ຄຳແນະນຳ</b><ul>
+<li>ສະແກນ QR ໃນແອັບທະນາຄານ ແລ້ວໂອນໃຫ້ຕົງຈຳນວນທີ່ລະບົບສະແດງ</li>
+<li>ລະບົບຈະເພີ່ມເສດນ້ອຍໆ (1–200 ₭, ເລີ່ມຈາກນ້ອຍສຸດ) ໃຫ້ອັດຕະໂນມັດ ເພື່ອບໍ່ໃຫ້ຊ້ຳກັບລູກຄ້າຄົນອື່ນ — ຍອດເຕັມທີ່ໂອນຈະເຂົ້າກະເປົາ</li>
+<li>QR ໃຊ້ໄດ້ ${QR_MIN} ນາທີ · 1 ບັນຊີ ມີ QR ໄດ້ 1 ອັນ ຕໍ່ຄັ້ງ · ຈຳນວນເງິນຖືກລັອກຈົນ QR ໝົດອາຍຸ</li>
+<li>ໂອນແລ້ວ ແນບສະລິບ ແລ້ວລໍຖ້າຮ້ານຢືນຢັນກ່ອນປິດໜ້າ</li>
+<li>ໝົດເວລາ ຕ້ອງສ້າງລາຍການໃໝ່</li></ul></div></div>${tpHist()}</div>`}
+ return `<div class="wrap" style="padding:0 16px 30px">${tpBack()}<div class="tpbox"><h1>🔳 ສະແກນ QR ເພື່ອໂອນ</h1>
+<div class="balbig qramt"><small>ຍອດທີ່ຕ້ອງໂອນ (ໃຫ້ຕົງທຸກຕົວເລກ)</small><b>${K(q.a)}</b><small>${K(q.b)} + <span class="sfx">ເສດ ${q.s} ₭</span> · ຍອດເຕັມນີ້ຈະເຂົ້າກະເປົາ</small></div>
+<div class="row"><span>QR ໝົດອາຍຸໃນ</span><b id="qrcd" data-e="${q.e}" style="color:var(--fire2);font-variant-numeric:tabular-nums">${qrFmt(q.e-Date.now())}</b></div>
+${qrOk(SHOP.qr)?`<div id="qrbox"><img class="tpqr" src="${esc(SHOP.qr)}" alt="QR ຮັບໂອນ" onerror="this.parentNode.innerHTML='<div class=\\'warnbox\\'>ຮ້ານຍັງບໍ່ໄດ້ອັບໂຫຼດຮູບ QR — ກະລຸນາໂອນຕາມບັນຊີດ້ານລຸ່ມ ຫຼື ຕິດຕໍ່ຮ້ານ</div>'"><a class="btn sm sec block" download="vanta-qr.jpg" href="${esc(SHOP.qr)}">⬇ ບັນທຶກຮູບ QR</a></div>`:'<div class="warnbox">ຮ້ານຍັງບໍ່ໄດ້ອັບໂຫຼດຮູບ QR — ກະລຸນາໂອນຕາມບັນຊີດ້ານລຸ່ມ ຫຼື ຕິດຕໍ່ຮ້ານ</div>'}
+${SHOP.bank?`<div class="row" style="margin-top:8px"><span>ບັນຊີຮັບໂອນ</span><b style="text-align:right">${esc(SHOP.bank)}</b></div>`:''}
+<small style="display:block;margin:8px 0;color:var(--mute)">QR ຂອງຮ້ານບໍ່ໄດ້ໃສ່ຈຳນວນເງິນໃຫ້ — ກະລຸນາພິມ ${K(q.a)} ເອງໃນແອັບທະນາຄານ</small>
+<label class="fl slipl"><span class="btn sm sec">📎 ແນບສະລິບ</span><input class="vh" type="file" accept="image/*" onchange="pickSlip(this,d=>{topSlip=d;$('#tfn').textContent='✓ ແນບແລ້ວ'})"><small id="tfn" style="color:var(--mute)">${topSlip?'✓ ແນບແລ້ວ':'ຍັງບໍ່ໄດ້ແນບ'}</small></label>
+<button class="btn block" id="topbtn" style="margin-top:8px" onclick="reqTop(this)">ແຈ້ງເຕີມເງິນ</button>
+<small class="hint">ຖ້າໂອນແລ້ວແຕ່ QR ໝົດເວລາ ໃຫ້ຕິດຕໍ່ຮ້ານພ້ອມສະລິບ</small></div>${tpHist()}</div>`}
+let qrBusy=false;
+async function qrMake(b){
+ if(qrBusy)return;
+ if(qrGet()){toast('warn','ມີ QR ທີ່ຍັງໃຊ້ໄດ້ຢູ່','ລໍຖ້າໝົດເວລາກ່ອນສ້າງໃໝ່ (1 ບັນຊີ ມີໄດ້ 1 QR)');render();return}
+ const el=$('#topin'),base=parseInt(((el?el.value:tpIn)||'').replace(/\D/g,''),10)||0,ok=base>=QMIN&&base<=QMAX,f=$('#f-top');
+ if(f){f.classList.remove('bad');void f.offsetWidth;f.classList.toggle('bad',!ok)}
+ if(!ok){toast('err','ຂໍອະໄພ ຈຳນວນເງິນບໍ່ຖືກ','ເຕີມໄດ້ 1,000 – 19,999,800 ₭');return}
+ if(!SHOP.bank&&!qrOk(SHOP.qr)){toast('err','ຮ້ານຍັງບໍ່ໄດ້ຕັ້ງບັນຊີຮັບໂອນ','ກະລຸນາຕິດຕໍ່ຮ້ານ');return}
+ qrBusy=true;if(b&&b.tagName=='BUTTON'){b.disabled=true;b.classList.add('ld')}
+ try{
+  /* server ເລືອກເສດນ້ອຍສຸດ (1–200 ₭) ທີ່ຍັງບໍ່ຖືກໃຊ້ໂດຍລູກຄ້າຄົນອື່ນ ແລ້ວລັອກໄວ້ */
+  const r=await rpc(sbU,'reserve_topup_amount',{p_base:base});
+  if(!r||!Number.isInteger(r.a)||!Number.isInteger(r.s))throw apiErr(500,'BAD_RESP','ລະບົບສ້າງຍອດບໍ່ສຳເລັດ ລອງໃໝ່ອີກຄັ້ງ');
+  qrPut({a:r.a,b:r.b,s:r.s,m:'qr',e:Date.now()+QR_MIN*60000});topSlip=null;tpIn='';render();scrollTo({top:0});
+ }catch(e){toast('err','ສ້າງ QR ບໍ່ສຳເລັດ',e.message||'ລອງໃໝ່ອີກຄັ້ງ');if(b&&b.tagName=='BUTTON'){b.disabled=false;b.classList.remove('ld')}}
+ finally{qrBusy=false}}
+reqTop=async function(b){
+ const q=qrGet();
+ if(!q){toast('err','QR ໝົດອາຍຸແລ້ວ','ກະລຸນາສ້າງລາຍການໃໝ່');render();return}
+ if(!topSlip){toast('err','ຂໍອະໄພ ຍັງບໍ່ໄດ້ແນບສະລິບ','ແນບສະລິບການໂອນ ແລ້ວກົດອີກຄັ້ງ');return}
+ b.disabled=true;b.classList.add('ld');
+ try{const t=await API('/topups','POST',{amount:q.a,method:q.m,slip:topSlip});try{await rpc(sbU,'confirm_topup_hold',{p_amount:q.a})}catch(_){}qrDrop();topSlip=null;tops.unshift(t);toast('ok','ແຈ້ງເຕີມເງິນແລ້ວ','ລໍຖ້າຮ້ານກວດ '+K(q.a));loop();render();scrollTo({top:0})}
+ catch(e){toast('err','ແຈ້ງເຕີມເງິນບໍ່ສຳເລັດ',e.message);b.disabled=false;b.classList.remove('ld')}}
+
+/* --- ໜ້າທີ 3: ໂຄ້ດເງິນ (ແຍກຈາກ QR) --- */
+function topCodeView(){
+ return `<div class="wrap" style="padding:0 16px 30px">${tpBack()}<div class="tpbox"><h1>🎉 ໂຄ້ດເງິນ</h1><p>ປ້ອນໂຄ້ດທີ່ໄດ້ຮັບຈາກຮ້ານ ເງິນຈະເຂົ້າກະເປົາທັນທີ</p>
+<div class="balbig" style="margin-top:0"><small>ຍອດຄົງເຫຼືອ</small><b data-bal data-v="${wallet.bal}">${K(wallet.bal)}</b></div>
+<div class="f" id="f-code"><label>ໂຄ້ດເງິນ <span style="color:var(--err)">*</span></label><div class="tprow"><input type="text" id="codein" maxlength="24" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ເຊັ່ນ ABCD-EFGH-JKLM" onkeydown="if(event.key=='Enter')redeemCode($('#codebtn'))"><button class="btn" id="codebtn" onclick="redeemCode(this)">ໃຊ້ໂຄ້ດ</button></div><div class="em">ໂຄ້ດບໍ່ຖືກຮູບແບບ</div></div>
+<div class="tptips"><b>ຄຳແນະນຳ</b><ul><li>ແຕ່ລະໂຄ້ດໃຊ້ໄດ້ຄັ້ງດຽວເທົ່ານັ້ນ</li><li>ໃສ່ໂຄ້ດຜິດ 5 ຄັ້ງ ຈະຖືກລ໋ອກ 10 ນາທີ</li><li>ໂຄ້ດອອກໃຫ້ໂດຍຮ້ານ — ຖ້າບໍ່ມີ ຕິດຕໍ່ຮ້ານ</li></ul></div></div></div>`}
+async function redeemCode(b){
+ const code=(($('#codein')||{}).value||'').toUpperCase().replace(/[^A-Z0-9]/g,''),f=$('#f-code'),ks=['code:'+ses.u,'dev:code'];
+ f.classList.remove('bad');
+ if(code.length<8||code.length>20){f.classList.add('bad');f.querySelector('.em').textContent='ໂຄ້ດບໍ່ຖືກຮູບແບບ';return}
+ try{lockCheck(ks)}catch(e){toast('err','ຖືກລ໋ອກຊົ່ວຄາວ',e.message);return}
+ b.disabled=true;
+ try{
+  const r=await rpc(sbU,'redeem_code',{p_code:code});
+  if(r&&r.ok){
+   if(ses.user&&ses.user.w)ses.user.w.bal=Number(r.balance)||0;setW();paintWallet(true);
+   const i=$('#codein');if(i)i.value='';
+   toast('ok','ໃຊ້ໂຄ້ດສຳເລັດ +'+K(Number(r.amount)||0),'ຍອດໃໝ່ '+K(wallet.bal));return}
+  const M={CODE_INVALID:'ໂຄ້ດບໍ່ຖືກ',CODE_USED:'ໂຄ້ດນີ້ຖືກໃຊ້ໄປແລ້ວ',CODE_EXPIRED:'ໂຄ້ດໝົດອາຍຸແລ້ວ',CODE_LOCKED:'ລອງຜິດຫຼາຍເກີນໄປ — ຖືກລ໋ອກ '+Math.ceil(((r&&r.seconds)||600)/60)+' ນາທີ'};
+  const msg=M[r&&r.error]||'ໃຊ້ໂຄ້ດບໍ່ສຳເລັດ';
+  f.classList.add('bad');f.querySelector('.em').textContent=msg;
+  if(r&&r.error!='CODE_LOCKED'){const le=lockFail(ks);if(le)toast('err','ລອງຜິດຫຼາຍເກີນໄປ',le.message)}
+  toast('err','ໃຊ້ໂຄ້ດບໍ່ໄດ້',msg)
+ }catch(e){
+  toast('err','ໃຊ້ໂຄ້ດບໍ່ໄດ້',/function|schema|not find/i.test(e.message||'')?'ຮ້ານຍັງບໍ່ໄດ້ເປີດລະບົບໂຄ້ດເງິນ (ຍັງບໍ່ໄດ້ຣັນ SQL)':(e.message||'ລອງໃໝ່'));
+  if(e.status==401){ses.u=null;ses.user=null;setW();refreshHead()}
+ }finally{b.disabled=false}}
+
+/* --- ເຊື່ອມໜ້າໃໝ່ເຂົ້າລະບົບ view ເດີມ --- */
+{const _sh=shop;shop=function(){if(view=='topup')return head()+topLand();if(view=='topqr')return head()+topQrView();if(view=='topcode')return head()+topCodeView();return _sh.apply(this,arguments)}}
+walletSheet=function(){if(!me()){authSheet('login');return}closeModal();closeDrawer();if(view!='topup')go('topup');else render()};
+{const _cm=closeModal;closeModal=function(){_cm.apply(this,arguments);walOpen=(mode=='shop'&&/^top/.test(view))}}
+{const _rd=render;render=function(){_rd.apply(this,arguments);walOpen=(mode=='shop'&&/^top/.test(view)&&!document.querySelector('#mod .modal'));if(walOpen)refreshWal()}}
+setInterval(()=>{const c=$('#qrcd');if(!c||mode!='shop')return;const r=+c.dataset.e-Date.now();c.classList.toggle('low',r>0&&r<60000);
+ if(r<=0){qrDrop();toast('warn','QR ໝົດອາຍຸແລ້ວ','ສ້າງລາຍການໃໝ່ ຖ້າຍັງຕ້ອງການເຕີມເງິນ');render();return}
+ c.textContent=qrFmt(r)},1000);
+
+/* ===== ແອດມິນ: ສ້າງ/ເບິ່ງໂຄ້ດເງິນ ===== */
+ATABS.push(['codes','🎉','Codes','ຈັດການໂຄ້ດເງິນ']);
+let codeList=null,codeAt=0,codeErr='',lastGen='';const cdv={amt:'',cnt:'1',day:'30',note:''};
+const fmtCode=c=>String(c).replace(/(.{4})(?=.)/g,'$1-');
+function codeAdm(){
+ const typing=document.activeElement&&/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+ if(!typing&&(!codeList||Date.now()-codeAt>30000)){codeAt=Date.now();rpc(sbA,'admin_list_codes').then(d=>{codeList=d||[];codeErr='';render()}).catch(e=>{codeList=codeList||[];codeErr=e.message||'error';render()})}
+ const fi=(k,l,t,x)=>`<div class="f"><label>${l}</label><input type="${t}" value="${esc(cdv[k])}" oninput="cdv.${k}=this.value" ${x||''}></div>`;
+ const list=(codeList||[]).map(c=>{const exp=c.expires_at&&new Date(c.expires_at)<=new Date(),st=c.used_at?['ໃຊ້ແລ້ວ','ok']:exp?['ໝົດອາຍຸ','err']:['ຍັງບໍ່ໃຊ້','warn'];
+  return `<div class="oc" style="cursor:default;flex-wrap:wrap"><div style="flex:1;min-width:150px"><b style="font-family:monospace;letter-spacing:.04em">${esc(fmtCode(c.code))}</b><br><small style="color:var(--mute)">${esc(c.note||'')}${c.used_by_name?' · ໃຊ້ໂດຍ '+esc(c.used_by_name):''}</small></div><div style="text-align:right"><b>${K(Number(c.amount)||0)}</b><br><span class="tag ${st[1]}">${st[0]}</span></div>${st[1]=='warn'?`<div style="width:100%">${bt('📋','ກ໊ອບໂຄ້ດ',`cp('${esc(fmtCode(c.code))}')`)}</div>`:''}</div>`}).join('');
+ return `<div class="box"><h3>🎉 ສ້າງໂຄ້ດເງິນໃໝ່</h3>${fi('amt','ຈຳນວນເງິນຕໍ່ໂຄ້ດ (₭)','number','min="1000" max="50000000" inputmode="numeric"')}${fi('cnt','ຈຳນວນໂຄ້ດ (1–50)','number','min="1" max="50" inputmode="numeric"')}${fi('day','ໝົດອາຍຸພາຍໃນ (ວັນ, 0 = ບໍ່ໝົດ)','number','min="0" max="365" inputmode="numeric"')}${fi('note','ໝາຍເຫດ (ບໍ່ບັງຄັບ)','text','maxlength="80"')}<button class="btn block" onclick="genCodes(this)">ສ້າງໂຄ້ດ</button><small style="color:var(--mute)">ແຕ່ລະໂຄ້ດໃຊ້ໄດ້ຄັ້ງດຽວ · ລູກຄ້າປ້ອນທີ່ ເຕີມເງິນ → ໂຄ້ດເງິນ</small></div>`
+ +(codeErr?roNote('ດຶງລາຍການໂຄ້ດບໍ່ໄດ້ — ກວດວ່າຣັນ SQL ໄຟລ໌ vanta_codes.sql ແລ້ວ ('+esc(codeErr)+')'):'')
+ +(list||'<div class="empty"><big>🎉</big>ຍັງບໍ່ມີໂຄ້ດ</div>')}
+async function genCodes(b){
+ const amt=parseInt(cdv.amt,10),cnt=parseInt(cdv.cnt,10),day=parseInt(cdv.day,10)||0;
+ if(!(amt>=1000&&amt<=50000000))return toast('err','ຈຳນວນເງິນບໍ່ຖືກ','ໃສ່ 1,000 – 50,000,000 ₭');
+ if(!(cnt>=1&&cnt<=50))return toast('err','ຈຳນວນໂຄ້ດບໍ່ຖືກ','ໃສ່ 1 – 50');
+ if(!(day>=0&&day<=365))return toast('err','ວັນໝົດອາຍຸບໍ່ຖືກ','ໃສ່ 0 – 365');
+ b.disabled=true;
+ try{const r=await rpc(sbA,'admin_create_codes',{p_amount:amt,p_count:cnt,p_days:day,p_note:(cdv.note||'').trim().slice(0,80)});
+  const L=(r||[]).map(fmtCode);lastGen=L.join('\n');codeAt=0;codeList=null;
+  modal(`<h2 style="margin:0 0 6px;font-size:20px">ສ້າງໂຄ້ດແລ້ວ ${L.length} ອັນ</h2><div class="box"><small style="color:var(--mute)">${K(amt)} ຕໍ່ໂຄ້ດ · ບັນທຶກ/ກ໊ອບໄວ້ ແລ້ວສົ່ງໃຫ້ລູກຄ້າ</small><textarea readonly rows="${Math.min(10,L.length+1)}" style="width:100%;margin-top:8px;font-family:monospace;padding:10px;border:1px solid var(--line);border-radius:12px">${esc(lastGen)}</textarea></div><button class="btn block" onclick="cp(lastGen)">📋 ກ໊ອບທັງໝົດ</button><button class="btn sec block" style="margin-top:10px" onclick="closeModal()">ປິດ</button>`,true);
+  render()}
+ catch(e){toast('err','ສ້າງໂຄ້ດບໍ່ສຳເລັດ',/function|schema|not find/i.test(e.message||'')?'ຍັງບໍ່ໄດ້ຣັນ SQL (vanta_codes.sql)':e.message);if(e.status==401){ses.a=null;render()}}
+ finally{b.disabled=false}}
 </script>
 </body>
 </html>
