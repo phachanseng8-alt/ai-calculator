@@ -686,7 +686,7 @@ function acctSheet(){const u=me();if(!u){authSheet('login');return}
 function admLoginView(){const first=false;
  return `<div class="wrap" style="max-width:460px;padding:28px 16px"><div class="box"><h2 style="margin:0 0 4px;font-size:22px">${first?'ຕັ້ງແອດມິນຄົນທຳອິດ':'ເຂົ້າສູ່ລະບົບຫຼັງບ້ານ'}</h2><p style="margin:0 0 12px;color:var(--mute);font-size:14px">${first?'ຍັງບໍ່ມີບັນຊີແອດມິນ — ສ້າງບັນຊີເຈົ້າຂອງຮ້ານ':'ສຳລັບເຈົ້າຂອງຮ້ານເທົ່ານັ້ນ'}</p>
 <div onkeydown="if(event.key=='Enter')doAdm($('#admgo'))">
-<div class="f" id="f-au"><label>ຊື່ຜູ້ໃຊ້</label><input type="text" id="au" autocomplete="username" autocapitalize="none"><div class="em">3–20 ຕົວ: a-z, 0-9, . _ -</div></div>
+<div class="f" id="f-au"><label>ອີເມວ ຫຼື ຊື່ຜູ້ໃຊ້</label><input type="text" id="au" inputmode="email" autocomplete="username" autocapitalize="none"><div class="em">ໃສ່ອີເມວ ຫຼື ຊື່ຜູ້ໃຊ້ (a-z, 0-9, . _ -)</div></div>
 <div class="f" id="f-ad2"><label>ລະຫັດຜ່ານ</label><div class="pw"><input type="password" id="adpw" autocomplete="${first?'new-password':'current-password'}"></div><div class="em">${first?'ຢ່າງໜ້ອຍ 8 ຕົວ':'ກະລຸນາໃສ່ລະຫັດຜ່ານ'}</div></div>
 ${first?`<div class="f" id="f-ad3"><label>ຢືນຢັນລະຫັດຜ່ານ</label><input type="password" id="adpw2" autocomplete="new-password"><div class="em">ລະຫັດຜ່ານບໍ່ຕົງກັນ</div></div>`:''}
 <button class="btn block" id="admgo" onclick="doAdm(this)">${first?'ສ້າງແອດມິນ':'ເຂົ້າສູ່ລະບົບ'}</button></div></div></div>`}
@@ -765,7 +765,7 @@ try{sbU=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,sbOpt('vanta-user'));sbA
 const apiErr=(status,code,msg)=>{const e=new Error(msg);e.status=status;e.code=code;e.own=true;return e};
 const normPh=v=>{let d=String(v||'').replace(/\D/g,'');if(d.startsWith('856'))d=d.slice(3);return d.replace(/^0/,'')};
 const phEmail=p=>normPh(p)+'@vanta.app';                       /* ເບີ → ອີເມວພາຍໃນ (ລູກຄ້າບໍ່ເຫັນ) */
-const admEmail=u=>String(u||'').trim().toLowerCase()+'@admin.vanta.app';
+const admEmail=u=>{u=String(u||'').trim().toLowerCase();return u.includes('@')?u:u+'@admin.vanta.app'};
 function mapAuthErr(e){
  if(e&&e.own)return e; /* error ທີ່ເຮົາສ້າງເອງ ສົ່ງຕໍ່ໄດ້ເລີຍ */
  const m=String(e&&e.message||'').toLowerCase(),st=e&&e.status;
@@ -926,7 +926,7 @@ async function doAdm(b){
  if(b.disabled)return;const un=$('#au').value.trim().toLowerCase(),pw=$('#adpw').value;
  document.querySelectorAll('#app .f').forEach(f=>f.classList.remove('bad'));
  let n=0;const bad=(id,m)=>{n++;const f=$('#f-'+id);f.classList.add('bad');if(m)f.querySelector('.em').textContent=m};
- if(!/^[a-z0-9._-]{3,20}$/.test(un))bad('au','3–20 ຕົວ: a-z, 0-9, . _ -');if(!pw)bad('ad2','ກະລຸນາໃສ່ລະຫັດຜ່ານ');
+ if(!(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(un)&&un.length<=120)&&!/^[a-z0-9._-]{3,20}$/.test(un))bad('au','ໃສ່ອີເມວ ຫຼື ຊື່ຜູ້ໃຊ້ໃຫ້ຖືກ');if(!pw)bad('ad2','ກະລຸນາໃສ່ລະຫັດຜ່ານ');
  if(n){toast('err','ຂໍອະໄພ ຂໍ້ມູນບໍ່ຖືກ','ກະລຸນາກວດຊ່ອງທີ່ເປັນສີແດງ');return}
  b.disabled=true;const old=b.innerHTML;b.innerHTML='<span class="spin"></span>';
  try{const d=await API('/admin/login','POST',{username:un,password:pw});ses.a=d.admin.username;await loadAdmin();render()}
